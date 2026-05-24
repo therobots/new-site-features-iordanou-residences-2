@@ -2,24 +2,24 @@
 const LOCAL_PROPERTIES = [
   {
     id: "traditional-stonehouse",
-    name: "Iordanou Traditional Stonehouse",
-    name_en: "Iordanou Traditional Stonehouse",
-    name_el: "Παραδοσιακό Πέτρινο Σπίτι Ιορδάνου",
-    location: "Molyvos, Lesvos",
+    name: "Traditional Stonehouse in Gavathas",
+    name_en: "Traditional Stonehouse in Gavathas",
+    name_el: "Παραδοσιακό Πέτρινο Σπίτι στον Γαββαθά",
+    location: "Gavathas, Lesvos",
     property_type: "Stonehouse",
     property_type_en: "Traditional Stonehouse",
     property_type_el: "Παραδοσιακό Πέτρινο Σπίτι",
-    max_guests: 6,
+    max_guests: 8,
     bedrooms: 3,
     bathrooms: 2,
-    base_price_per_night: 110,
-    amenities: ["WiFi", "Parking", "Air Conditioning", "Kitchen", "Sea View", "Garden"],
-    description: "Experience authentic Greek island living in this magnificent, hand-carved stone residence. Situated in the historic village of Molyvos, this property blends traditional architecture with modern comforts, offering panoramic views of the Aegean Sea and unforgettable sunset vistas.",
-    description_en: "Experience authentic Greek island living in this magnificent, hand-carved stone residence. Situated in the historic village of Molyvos, this property blends traditional architecture with modern comforts, offering panoramic views of the Aegean Sea and unforgettable sunset vistas.",
+    base_price_per_night: 180,
+    amenities: ["WiFi", "Parking", "Air Conditioning", "Kitchen", "Garden"],
+    description: "Τhis unique house is situated at  Gavathas, 200 m distance from the sea,surrounded  by a splendid  farm of 9000 sq.m full of trees and vineyards.The house comprises of a spacious and sunny living room with fire-place,dining area and fully equipped kitchen,four bedrooms and two bathrooms. Ideal for big families or groups of friends.What makes this house unique, is not only it's tastefully designed interior,but the promise of wonderful hours spent in the outdoor sitting areas.",
+    description_en: "Τhis unique house is situated at  Gavathas, 200 m distance from the sea,surrounded  by a splendid  farm of 9000 sq.m full of trees and vineyards.The house comprises of a spacious and sunny living room with fire-place,dining area and fully equipped kitchen,four bedrooms and two bathrooms. Ideal for big families or groups of friends.What makes this house unique, is not only it's tastefully designed interior,but the promise of wonderful hours spent in the outdoor sitting areas." 
     description_el: "Ζήστε την αυθεντική φιλοξενία της Λέσβου σε αυτή την υπέροχη, χειροποίητη πέτρινη κατοικία. Βρίσκεται στον ιστορικό Μόλυβο, συνδυάζοντας την παραδοσιακή αρχιτεκτονική με τις σύγχρονες ανέσεις, προσφέροντας πανοραμική θέα στο Αιγαίο.",
     image_urls: [
-      "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200&q=80",
-      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200&q=80"
+      "https://a0.muscache.com/im/pictures/911a0e00-b2c7-47fc-820f-1c346f1a4f91.jpg?im_w=12000",
+      "https://a0.muscache.com/im/pictures/f99819c4-4325-47b3-b991-d8ce6dbaa220.jpg?im_w=720"
     ],
     blocked_dates: []
   },
