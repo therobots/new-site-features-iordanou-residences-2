@@ -20,10 +20,22 @@ export default function Home() {
 
   return (
     <div>
-      {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/30">
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32 relative">
+      {/* 1. HERO SECTION WITH IMAGE BACKGROUND */}
+      <section className="relative overflow-hidden bg-slate-900 text-white min-h-[70vh] flex items-center">
+        {/* Background Image Container */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            // ΑΝΤΙΚΑΤΑΣΤΗΣΕ ΤΟ LINK ΠΑΡΑΚΑΤΩ ΜΕ ΤΟ LINK ΤΗΣ ΦΩΤΟΓΡΑΦΙΑΣ ΣΟΥ
+            src="https://www.visitgreece.gr/images/1743x752/jpg/files/i_1162556431_lesvos_1743x752.jpg" 
+            alt="Iordanou Residences Background" 
+            className="w-full h-full object-cover opacity-45"
+          />
+          {/* Σκούρο φίλτρο (overlay) για τέλεια αντίθεση στα γράμματα */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-slate-950/50" />
+        </div>
+
+        {/* Content Area */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 relative z-10 w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -31,23 +43,23 @@ export default function Home() {
             className="max-w-2xl"
           >
             <div className="flex items-center gap-2 mb-4">
-              <MapPin className="w-4 h-4 text-primary" />
-              <span className="text-sm font-body font-medium text-primary tracking-wide">Lesvos, Greece</span>
+              <MapPin className="w-4 h-4 text-sky-400" />
+              <span className="text-sm font-body font-medium text-sky-300 tracking-wide">Lesvos, Greece</span>
             </div>
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4">
+            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
               {t('heroTitle')}
             </h1>
-            <p className="font-body text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
+            <p className="font-body text-lg text-white/90 mb-8 max-w-lg leading-relaxed">
               {t('heroSubtitle')}
             </p>
             <div className="flex flex-wrap gap-3">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 font-body font-semibold gap-2 text-base px-6" asChild>
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-body font-semibold gap-2 text-base px-6" asChild>
                 <a href="#properties">
                   {t('bookDirectly')}
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </Button>
-              <Button size="lg" variant="outline" className="font-body font-medium text-base px-6" asChild>
+              <Button size="lg" variant="outline" className="font-body font-medium text-base px-6 border-white/30 text-white hover:bg-white/10 hover:text-white" asChild>
                 <Link to="/explore">{t('exploreLesvos')}</Link>
               </Button>
             </div>
