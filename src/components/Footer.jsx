@@ -20,14 +20,17 @@ export default function Footer() {
             <div className="space-y-2.5 text-sm font-body">
               <div className="flex items-center gap-2.5 text-background/60">
                 <MapPin className="w-4 h-4 flex-shrink-0" />
-                <span>Evangelos and Giorgos Iordanou, Lesvos,Greece </span>
+                <span>Evangelos and Giorgos Iordanou 
+                      Lesvos, Greece</span>
               </div>
               <div className="flex items-center gap-2.5 text-background/60">
                 <Mail className="w-4 h-4 flex-shrink-0" />
+                {/* 1. REPLACE THE EMAIL BELOW */}
                 <span>iordanouresidences@gmail.com</span>
               </div>
               <div className="flex items-center gap-2.5 text-background/60">
                 <Phone className="w-4 h-4 flex-shrink-0" />
+                {/* 2. REPLACE THE PHONE NUMBER BELOW */}
                 <span>+30 6988011845 +30 6977629339</span>
               </div>
             </div>
