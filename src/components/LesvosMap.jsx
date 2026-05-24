@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { useLanguage } from '@/lib/LanguageContext';
+import 'leaflet/dist/leaflet.css';
 
 
 // Fix default marker icon issue with webpack
