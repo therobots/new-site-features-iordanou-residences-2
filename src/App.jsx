@@ -12,6 +12,7 @@ import PropertyDetails from '@/pages/PropertyDetails';
 import ExploreLesvos from '@/pages/ExploreLesvos';
 import AdminDashboard from '@/pages/AdminDashboard';
 import BookingPage from '@/pages/BookingPage';
+import ResidencesPage from '@/pages/ResidencesPage';
 function App() {
   return (
     <LanguageProvider>
