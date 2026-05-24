@@ -24,20 +24,20 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Navigation Links Menu */}
           <nav className="hidden md:flex items-center gap-1">
             <Link to="/" className="px-4 py-2 text-sm font-body font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
               {t('home')}
             </Link>
-            {/* Added: Direct link to the unified booking platform */}
+            {/* Added: Residences Showcase Link Tab */}
+            <Link to="/residences" className="px-4 py-2 text-sm font-body font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
+              {lang === 'en' ? 'Residences' : 'Κατοικίες'}
+            </Link>
             <Link to="/book" className="px-4 py-2 text-sm font-body font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
               {lang === 'en' ? 'Booking' : 'Κράτηση'}
             </Link>
             <Link to="/explore" className="px-4 py-2 text-sm font-body font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
               {t('explore')}
-            </Link>
-            <Link to="/admin" className="px-4 py-2 text-sm font-body font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
-              {t('dashboard')}
             </Link>
           </nav>
 
@@ -60,21 +60,21 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile Slide-Out Dropdown Menu Links */}
+        {/* Mobile Dropdown Overlay Navigation Menu Links Drawer */}
         {mobileOpen && (
           <div className="md:hidden pb-4 border-t border-border/50 pt-3 space-y-1">
             <Link to="/" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 text-sm font-body font-medium text-foreground rounded-lg hover:bg-muted">
               {t('home')}
             </Link>
-            {/* Added: Direct link inside the mobile slider drawer */}
+            {/* Added: Mobile Drawer Pointers */}
+            <Link to="/residences" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 text-sm font-body font-medium text-foreground rounded-lg hover:bg-muted">
+              {lang === 'en' ? 'Residences' : 'Κατοικίες'}
+            </Link>
             <Link to="/book" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 text-sm font-body font-medium text-foreground rounded-lg hover:bg-muted">
               {lang === 'en' ? 'Booking' : 'Κράτηση'}
             </Link>
             <Link to="/explore" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 text-sm font-body font-medium text-foreground rounded-lg hover:bg-muted">
               {t('explore')}
-            </Link>
-            <Link to="/admin" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 text-sm font-body font-medium text-foreground rounded-lg hover:bg-muted">
-              {t('dashboard')}
             </Link>
           </div>
         )}
