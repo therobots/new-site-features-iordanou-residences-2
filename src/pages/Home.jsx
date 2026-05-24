@@ -130,7 +130,7 @@ export default function Home() {
               {lang === 'en' ? 'Authentic Hospitality' : 'Αυθεντική Φιλοξενία'}
             </div>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground">
-              {lang === 'en' ? 'Meet the Family' : 'Γνωρίστε την Οικογένεια'}
+              {lang === 'en' ? 'Meet the Owner' : 'Γνωρίστε τον Οικοδεσπότη'}
             </h2>
             <p className="font-body text-sm sm:text-base text-muted-foreground leading-relaxed whitespace-pre-line">
               {lang === 'en' 
