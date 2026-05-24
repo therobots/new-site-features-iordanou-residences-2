@@ -24,25 +24,25 @@ const LOCAL_PROPERTIES = [
     blocked_dates: []
   },
   {
-    id: "aegean-horizon-villa",
-    name: "Aegean Horizon Retreat",
-    name_en: "Aegean Horizon Retreat",
-    name_el: "Καταφύγιο Ορίζοντας Αιγαίου",
-    location: "Petra, Lesvos",
+    id: "Villa Hermes",
+    name: "Villa Hermes",
+    name_en: "Villa Hermes",
+    name_el: "Βίλα Ερμής",
+    location: "Mytilene, Lesvos",
     property_type: "Villa",
-    property_type_en: "Beachfront Villa",
+    property_type_en: "Close to beach Villa",
     property_type_el: "Παραθαλάσσια Βίλα",
     max_guests: 7,
     bedrooms: 3,
     bathrooms: 2,
     base_price_per_night: 140,
-    amenities: ["WiFi", "Parking", "Air Conditioning", "Kitchen", "Sea View", "Pool"],
-    description: "A gorgeous, sun-drenched villa stepping directly out onto the peaceful coastal shores near Petra. Features expansive veranda layouts, private spaces, and modern interior finishings designed for premium family vacation dynamics.",
-    description_en: "A gorgeous, sun-drenched villa stepping directly out onto the peaceful coastal shores near Petra. Features expansive veranda layouts, private spaces, and modern interior finishings designed for premium family vacation dynamics.",
-    description_el: "Μια υπέροχη, ηλιόλουστη βίλα που οδηγεί απευθείας στην ήσυχη ακτή κοντά στην Πέτρα. Διαθέτει ευρύχωρες βεράντες και μοντέρνους εσωτερικούς χώρους σχεδιασμένους για τις τέλειες οικογενειακές διακοπές.",
+    amenities: ["WiFi", "Parking", "Air Conditioning", "Kitchen", "Sea View",],
+    description: "Villa Hermes is a wonderful and unique place with a rich history and character. Its transformation from a warehouse to an office and finally into a beautifully renovated house adds to its charm. The combination of modern materials and vintage furniture giving the house a distinctive atmosphere. The layout of the house, with its open spaces and architectural elements, adds to the overall appeal.",
+    description_en: "Villa Hermes is a wonderful and unique place with a rich history and character. Its transformation from a warehouse to an office and finally into a beautifully renovated house adds to its charm. The combination of modern materials and vintage furniture giving the house a distinctive atmosphere. The layout of the house, with its open spaces and architectural elements, adds to the overall appeal.",
+    description_el: "Μια υπέροχη, ηλιόλουστη βίλα που οδηγεί απευθείας στην ήσυχη ακτή κοντά στην θάλασσα αλλά και στο κέντρο της Μυτιλήνης. Διαθέτει ευρύχωρη αυλή και μεγάλο σαλόνι για τις τέλειες οικογενειακές διακοπές.",
     image_urls: [
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80",
-      "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1200&q=80"
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-963513247135914909/original/00dd30e2-d61c-445e-a95c-cd0cdd835316.jpeg?im_w=720",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTYzNTEzMjQ3MTM1OTE0OTA5/original/a981a56a-faa5-413a-af4a-d0c08fda1350.jpeg?im_w=720"
     ],
     blocked_dates: []
   },
