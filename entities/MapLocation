@@ -1,0 +1,46 @@
+{
+  "name": "MapLocation",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "residence",
+        "beach",
+        "landmark"
+      ],
+      "description": "Type of location"
+    },
+    "title_en": {
+      "type": "string"
+    },
+    "title_el": {
+      "type": "string"
+    },
+    "desc_en": {
+      "type": "string"
+    },
+    "desc_el": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "property_id": {
+      "type": "string",
+      "description": "Linked property ID for residence category"
+    }
+  },
+  "required": [
+    "category",
+    "title_en",
+    "latitude",
+    "longitude"
+  ]
+}
