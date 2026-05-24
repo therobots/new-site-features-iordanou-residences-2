@@ -12,7 +12,7 @@ import { ArrowLeft, MapPin, Users, BedDouble, Bath, Wifi, Car, Wind, Utensils, W
 import { format, differenceInDays } from 'date-fns';
 import { motion } from 'framer-motion';
 
-const WHATSAPP_NUMBER = '306900000000';
+const WHATSAPP_NUMBER = '306988011845';
 
 const amenityIcons = {
   'WiFi': Wifi, 'Parking': Car, 'Air Conditioning': Wind, 'Kitchen': Utensils,
