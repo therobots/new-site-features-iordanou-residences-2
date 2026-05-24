@@ -24,9 +24,14 @@ export default function Header() {
             </div>
           </Link>
 
+          {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-1">
             <Link to="/" className="px-4 py-2 text-sm font-body font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
               {t('home')}
+            </Link>
+            {/* Added: Direct link to the unified booking platform */}
+            <Link to="/book" className="px-4 py-2 text-sm font-body font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
+              {lang === 'en' ? 'Booking' : 'Κράτηση'}
             </Link>
             <Link to="/explore" className="px-4 py-2 text-sm font-body font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
               {t('explore')}
@@ -55,10 +60,15 @@ export default function Header() {
           </div>
         </div>
 
+        {/* Mobile Slide-Out Dropdown Menu Links */}
         {mobileOpen && (
           <div className="md:hidden pb-4 border-t border-border/50 pt-3 space-y-1">
             <Link to="/" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 text-sm font-body font-medium text-foreground rounded-lg hover:bg-muted">
               {t('home')}
+            </Link>
+            {/* Added: Direct link inside the mobile slider drawer */}
+            <Link to="/book" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 text-sm font-body font-medium text-foreground rounded-lg hover:bg-muted">
+              {lang === 'en' ? 'Booking' : 'Κράτηση'}
             </Link>
             <Link to="/explore" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 text-sm font-body font-medium text-foreground rounded-lg hover:bg-muted">
               {t('explore')}
