@@ -117,7 +117,7 @@ export default function Home() {
           {/* Host Image Block */}
           <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-md border border-border/20 bg-muted">
             <img 
-              src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80" 
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcyYGjg8X8FBcAX12eUK7fxYEwzad7CW5og&s" 
               alt="Our Family" 
               className="w-full h-full object-cover"
             />
