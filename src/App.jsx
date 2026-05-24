@@ -11,7 +11,7 @@ import Home from '@/pages/Home';
 import PropertyDetails from '@/pages/PropertyDetails';
 import ExploreLesvos from '@/pages/ExploreLesvos';
 import AdminDashboard from '@/pages/AdminDashboard';
-
+import BookingPage from '@/pages/BookingPage';
 function App() {
   return (
     <LanguageProvider>
@@ -22,6 +22,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/property/:id" element={<PropertyDetails />} />
               <Route path="/explore" element={<ExploreLesvos />} />
+              <Route path="/book" element={<BookingPage />} />
               <Route path="/admin" element={<AdminDashboard />} />
             </Route>
             <Route path="*" element={<PageNotFound />} />
