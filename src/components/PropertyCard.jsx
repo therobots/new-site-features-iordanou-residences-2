@@ -17,7 +17,7 @@ export default function PropertyCard({ property, index = 0 }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.15 }}
     >
-      <Link to={`/property/${property.id}`} className="group block">
+      <Link to={to={`/book?house=${property.id}`}} className="group block">
         <div className="bg-card rounded-xl overflow-hidden border border-border/50 shadow-sm hover:shadow-lg transition-all duration-300">
           <div className="relative aspect-[4/3] overflow-hidden">
             <img
