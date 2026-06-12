@@ -5,11 +5,10 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import BookingCalendar from '@/components/BookingCalendar';
 import PriceSummary, { calculatePricing } from '@/components/PriceSummary';
-import { ArrowLeft, MapPin, Users, BedDouble, Bath, Wifi, Car, Wind, Utensils, Waves, TreePine, Check, Info, MessageCircle, Minus, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowLeft, MapPin, Users, BedDouble, Bath, Wifi, Car, Wind, Utensils, Waves, TreePine, Check, Info, MessageCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Users, BedDouble, Bath, Wifi, Car, Wind, Utensils, Waves, TreePine, Check, Info, MessageCircle, Minus, Plus } from 'lucide-react';
 import { format, differenceInDays } from 'date-fns';
 import { motion } from 'framer-motion';
 
@@ -28,7 +27,7 @@ export default function PropertyDetails() {
   const [checkOut, setCheckOut] = useState(null);
   const [couponData, setCouponData] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [guests, setGuests] = useState(2);
+  const [guests, setGuests] = useState(2); // State variable for guest counter
 
   const { data: property, isLoading } = useQuery({
     queryKey: ['property', propertyId],
@@ -197,10 +196,8 @@ export default function PropertyDetails() {
             <p className="text-xs text-center text-green-700 font-body bg-green-50 rounded-lg py-1.5">{t('weeklyDiscountNote')}</p>
           </div>
 
-
-
-        {/* 👥 Μετρητής Επισκεπτών στο Sidebar */}
-          <div className="flex items-center justify-between p-3.5 bg-muted/60 border border-border/50 rounded-xl">
+          {/* 👥 Visitor Counter Component Inside Sidebar Panel */}
+          <div className="flex items-center justify-between p-3.5 bg-muted/60 border border-border/50 rounded-xl shadow-sm">
             <div className="text-xs font-body font-semibold text-foreground">
               {lang === 'el' ? 'Επισκέπτες:' : 'Guests:'}
               <span className="block font-normal text-muted-foreground text-[10px] mt-0.5">
@@ -210,15 +207,15 @@ export default function PropertyDetails() {
             <div className="flex items-center gap-2.5">
               <button 
                 onClick={() => setGuests(prev => Math.max(1, prev - 1))}
-                className="w-7 h-7 flex items-center justify-center rounded-full border border-border bg-white hover:bg-slate-50 active:scale-95 transition-all"
+                className="w-7 h-7 flex items-center justify-center rounded-full border border-border bg-white hover:bg-slate-50 active:scale-95 transition-all shadow-sm font-heading font-bold"
               >
-                <Minus className="w-3.5 h-3.5" />
+                <Minus className="w-3 h-3 text-foreground" />
               </button>
               <button 
                 onClick={() => setGuests(prev => Math.min(property.max_guests || 6, prev + 1))}
-                className="w-7 h-7 flex items-center justify-center rounded-full border border-border bg-white hover:bg-slate-50 active:scale-95 transition-all"
+                className="w-7 h-7 flex items-center justify-center rounded-full border border-border bg-white hover:bg-slate-50 active:scale-95 transition-all shadow-sm font-heading font-bold"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus className="w-3 h-3 text-foreground" />
               </button>
             </div>
           </div>
@@ -231,17 +228,7 @@ export default function PropertyDetails() {
                 checkOut={checkOut}
                 couponData={couponData}
                 onCouponApplied={setCouponData}
-                guests={guests} // Πέρασμα του state
-              />
-
-          {canBook && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-              <PriceSummary
-                property={property}
-                checkIn={checkIn}
-                checkOut={checkOut}
-                couponData={couponData}
-                onCouponApplied={setCouponData}
+                guests={guests}
               />
               <Button
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-body font-semibold text-base h-14 mt-4 gap-2 shadow-lg"
