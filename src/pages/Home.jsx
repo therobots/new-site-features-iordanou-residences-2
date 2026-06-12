@@ -22,19 +22,15 @@ export default function Home() {
     <div>
       {/* 1. HERO SECTION WITH IMAGE BACKGROUND */}
       <section className="relative overflow-hidden bg-slate-900 text-white min-h-[70vh] flex items-center">
-        {/* Background Image Container */}
         <div className="absolute inset-0 z-0">
           <img 
-            // ΑΝΤΙΚΑΤΑΣΤΗΣΕ ΤΟ LINK ΠΑΡΑΚΑΤΩ ΜΕ ΤΟ LINK ΤΗΣ ΦΩΤΟΓΡΑΦΙΑΣ ΣΟΥ
             src="https://www.visitgreece.gr/images/1743x752/jpg/files/i_1162556431_lesvos_1743x752.jpg" 
             alt="Iordanou Residences Background" 
             className="w-full h-full object-cover opacity-45"
           />
-          {/* Σκούρο φίλτρο (overlay) για τέλεια αντίθεση στα γράμματα */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-slate-950/50" />
         </div>
 
-        {/* Content Area */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 relative z-10 w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -67,7 +63,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. PROPERTIES SHOWCASE (MOVED UP) */}
+      {/* 2. PROPERTIES SHOWCASE (CENTERED FOR 2 ITEMS) */}
       <section id="properties" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
         <div className="text-center mb-10 sm:mb-14">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">{t('ourResidences')}</h2>
@@ -75,8 +71,8 @@ export default function Home() {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {[1, 2, 3].map(i => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto justify-center">
+            {[1, 2].map(i => (
               <div key={i} className="space-y-4">
                 <Skeleton className="aspect-[4/3] rounded-xl" />
                 <Skeleton className="h-6 w-3/4" />
@@ -86,7 +82,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto justify-center">
             {properties.map((property, i) => (
               <PropertyCard key={property.id} property={property} index={i} />
             ))}
@@ -123,10 +119,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. NEW: MEET YOUR HOST SECTION */}
+      {/* 4. MEET YOUR HOST SECTION */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center bg-muted/30 border border-border/40 rounded-2xl p-6 sm:p-10 shadow-sm">
-          {/* Host Image Block */}
           <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-md border border-border/20 bg-muted">
             <img 
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcyYGjg8X8FBcAX12eUK7fxYEwzad7CW5og&s" 
@@ -135,7 +130,6 @@ export default function Home() {
             />
           </div>
           
-          {/* Letter Description Block */}
           <div className="space-y-4">
             <div className="flex items-center gap-1.5 text-primary text-xs font-body font-bold uppercase tracking-wider">
               <Heart className="w-3.5 h-3.5 fill-current" />
