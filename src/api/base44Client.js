@@ -1,5 +1,3 @@
-import { createClient } from "@base44/client"
-
 const LOCAL_PROPERTIES = [
   {
     id: "traditional-stonehouse",
