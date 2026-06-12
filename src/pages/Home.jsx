@@ -18,31 +18,31 @@ export default function Home() {
     initialData: [],
   });
 
-  // Testimonials Data
+  // Real Testimonials Data
   const testimonials = [
     {
-      name: "Sarah M.",
-      location: "UK",
-      text_en: "Villa Hermes was exactly what we needed. Peaceful, beautifully designed, and just a short walk to the sea. The hosts were incredibly welcoming!",
-      text_el: "Η Βίλα Ερμής ήταν ακριβώς αυτό που χρειαζόμασταν. Ήσυχη, με υπέροχο design και μόλις λίγα βήματα από τη θάλασσα. Εξαιρετικοί οικοδεσπότες!"
+      name: "Eleni",
+      location: "Google",
+      text_en: "The house is wonderful, traditional, very clean and comfortable. We felt like home.",
+      text_el: "Το σπίτι είναι υπέροχο, παραδοσιακό, πολύ καθαρό και άνετο. Νιώσαμε σαν στο σπίτι μας."
     },
     {
-      name: "Γιώργος Π.",
-      location: "Ελλάδα",
-      text_en: "The stonehouse in Gavathas is a hidden paradise. The huge garden and the traditional architecture made our family vacation truly unforgettable.",
-      text_el: "Το πέτρινο σπίτι στον Γαββαθά είναι ένας κρυμμένος παράδεισος. Ο τεράστιος κήπος και η παραδοσιακή αρχιτεκτονική έκαναν τις διακοπές μας αξέχαστες."
+      name: "Andreas",
+      location: "Google",
+      text_en: "Iordanou Residences is the best place to stay in Lesvos! Great hospitality and attention to detail.",
+      text_el: "Τα Iordanou Residences είναι το καλύτερο μέρος για διαμονή στη Λέσβο! Εξαιρετική φιλοξενία και προσοχή στη λεπτομέρεια."
     },
     {
-      name: "Lena K.",
-      location: "Germany",
-      text_en: "Perfect location to explore Lesvos! Direct booking saved us a lot of money and the communication via WhatsApp was super fast and easy.",
-      text_el: "Τέλεια τοποθεσία για να εξερευνήσεις τη Λέσβο! Η απευθείας κράτηση μας γλίτωσε χρήματα και η επικοινωνία στο WhatsApp ήταν άμεση."
+      name: "George",
+      location: "Google",
+      text_en: "Great location, very peaceful, and the garden is amazing. Perfect for a relaxing vacation.",
+      text_el: "Εξαιρετική τοποθεσία, πολύ ήσυχα, και ο κήπος είναι καταπληκτικός. Τέλειο για χαλαρωτικές διακοπές."
     }
   ];
 
   return (
     <div>
-      {/* 1. HERO SECTION WITH IMAGE BACKGROUND */}
+      {/* 1. HERO SECTION */}
       <section className="relative overflow-hidden bg-slate-900 text-white min-h-[70vh] flex items-center">
         <div className="absolute inset-0 z-0">
           <img 
@@ -112,16 +112,13 @@ export default function Home() {
         )}
       </section>
 
-      {/* 3. TESTIMONIALS (NEW!) */}
+      {/* 3. TESTIMONIALS */}
       <section className="bg-muted/30 border-y border-border/50 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl font-bold text-foreground mb-3">
               {lang === 'en' ? 'What Our Guests Say' : 'Τι Λένε οι Επισκέπτες μας'}
             </h2>
-            <p className="font-body text-muted-foreground">
-              {lang === 'en' ? 'Real experiences from Iordanou Residences' : 'Πραγματικές εμπειρίες στα Iordanou Residences'}
-            </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
@@ -154,7 +151,6 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground text-center mb-12">{t('whyBook')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Κάρτα 1 */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -168,8 +164,6 @@ export default function Home() {
             <h3 className="font-heading text-lg font-semibold text-foreground mb-3">{t('reason1Title')}</h3>
             <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason1Desc')}</p>
           </motion.div>
-
-          {/* Κάρτα 2 */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -183,8 +177,6 @@ export default function Home() {
             <h3 className="font-heading text-lg font-semibold text-foreground mb-3">{t('reason2Title')}</h3>
             <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason2Desc')}</p>
           </motion.div>
-
-          {/* Κάρτα 3 */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -201,7 +193,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. MEET YOUR HOST SECTION */}
+      {/* 5. MEET YOUR HOST */}
       <section className="bg-foreground text-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -212,7 +204,6 @@ export default function Home() {
                 className="w-full h-full object-cover"
               />
             </div>
-            
             <div className="space-y-6">
               <div className="flex items-center gap-2 text-primary text-xs font-body font-bold uppercase tracking-wider">
                 <Heart className="w-4 h-4 fill-current" />
@@ -230,7 +221,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }
