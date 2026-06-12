@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 import BookingCalendar from '@/components/BookingCalendar';
 import PriceSummary, { calculatePricing } from '@/components/PriceSummary';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, MessageCircle, Calendar, Home, MapPin, Users, Minus, Plus } from 'lucide-react';
 import { format, differenceInDays } from 'date-fns';
 import { motion } from 'framer-motion';
@@ -65,14 +64,15 @@ export default function BookingPage() {
     const coStr = format(checkOut, 'dd/MM/yyyy');
     const coupon = couponData?.code || (lang === 'el' ? 'Καμία' : 'None');
     
-    const msg = `Hello! I would like to request a direct booking at Iordanou Residences.\n\n` +
-                `• Κατάλυμα: ${propertyName}\n` +
-                `• Επισκέπτες: ${guests} άτομα\n` +
-                `• Check-In: ${ciStr}\n` +
-                `• Check-Out: ${coStr}\n` +
-                `• Διαμονή: ${pricing.nights} νύχτες\n` +
-                `• Κωδικός Προσφοράς: ${coupon}\n` +
-                `• Συνολικό Ποσό: €${pricing.total.toFixed(2)}`;
+    // Using the translated clean template from context
+    const msg = t('whatsappMsg')
+      .replace('{property}', propertyName)
+      .replace('{guests}', guests)
+      .replace('{checkIn}', ciStr)
+      .replace('{checkOut}', coStr)
+      .replace('{nights}', pricing.nights)
+      .replace('{coupon}', coupon)
+      .replace('{total}', pricing.total.toFixed(2));
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
