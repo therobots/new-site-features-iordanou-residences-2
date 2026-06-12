@@ -65,7 +65,7 @@ const translations = {
     beaches: "Beaches",
   },
   el: {
-    brand: "Ιορδάνου Residences",
+    brand: "Iordanou Residences",
     tagline: "Παραδοσιακά σπίτια διακοπών στο νησί της Λέσβου",
     lesvosGreece: "Λέσβος, Ελλάδα",
     chatWithUs: "Μιλήστε μας",
