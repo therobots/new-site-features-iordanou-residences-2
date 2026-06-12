@@ -46,28 +46,7 @@ const LOCAL_PROPERTIES = [
     ],
     blocked_dates: []
   },
-  {
-    id: "olive-grove-cottage",
-    name: "Olive Grove Hideaway",
-    name_en: "Olive Grove Hideaway",
-    name_el: "Κρυψώνα στον Ελαιώνα",
-    location: "Plomari, Lesvos",
-    property_type: "Cottage",
-    property_type_en: "Rural Cottage",
-    property_type_el: "Εξοχική Κατοικία",
-    max_guests: 4,
-    bedrooms: 2,
-    bathrooms: 1,
-    base_price_per_night: 85,
-    amenities: ["WiFi", "Parking", "Air Conditioning", "Kitchen", "Garden"],
-    description: "Nestled among centuries-old silver olive trees, this charming cottage provides ultimate privacy and isolation while remaining just a short drive from the famous beaches of Plomari.",
-    description_en: "Nestled among centuries-old silver olive trees, this charming cottage provides ultimate privacy and isolation while remaining just a short drive from the famous beaches of Plomari.",
-    description_el: "Φωλιασμένο ανάμεσα σε αιωνόβιους ελαιώνες, αυτό το γοητευτικό εξοχικό σπίτι προσφέρει απόλυτη ιδιωτικότητα, ενώ απέχει ελάχιστα λεπτά με το αυτοκίνητο από τις διάσημες παραλίες του Πλωμαρίου.",
-    image_urls: [
-      "https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?w=1200&q=80"
-    ],
-    blocked_dates: []
-  }
+
 ];
 
 const LOCAL_MAP_LOCATIONS = [
