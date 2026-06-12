@@ -18,7 +18,6 @@ export default function PropertyCard({ property, index = 0 }) {
       transition={{ duration: 0.5, delay: index * 0.15 }}
       className="bg-card rounded-xl overflow-hidden border border-border/50 shadow-sm hover:shadow-lg transition-all duration-300"
     >
-      {/* 1. Clicking the house picture routes to the Residences Showcase tab */}
       <Link to={`/residences?house=${property.id}`} className="group block relative aspect-[4/3] overflow-hidden">
         <img
           src={mainImage}
@@ -39,13 +38,12 @@ export default function PropertyCard({ property, index = 0 }) {
       </Link>
 
       <div className="p-5 sm:p-6">
-        {/* Title link also targets the residences page for cohesion */}
         <Link to={`/residences?house=${property.id}`} className="group block">
           <h3 className="font-heading text-xl font-semibold text-foreground mb-1 hover:text-primary transition-colors">
             {localField(property, 'name')}
           </h3>
         </Link>
-        <p className="text-sm text-muted-foreground font-body mb-4">{property.location}</p>
+        <p className="text-sm text-muted-foreground font-body mb-4">{localField(property, 'location')}</p>
 
         <div className="flex items-center gap-4 text-sm text-muted-foreground font-body mb-5">
           <div className="flex items-center gap-1.5">
@@ -62,7 +60,6 @@ export default function PropertyCard({ property, index = 0 }) {
           </div>
         </div>
 
-        {/* 2. Clicking the "Book Directly" button routes straight to the Checkout calendar */}
         <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-body font-medium gap-2 group/btn">
           <Link to={`/book?house=${property.id}`}>
             {t('bookDirectly')}
