@@ -22,6 +22,7 @@ const LOCAL_PROPERTIES = [
       "https://a0.muscache.com/im/pictures/911a0e00-b2c7-47fc-820f-1c346f1a4f91.jpg?im_w=480&im_q=medq",
       "https://a0.muscache.com/im/pictures/f99819c4-4325-47b3-b991-d8ce6dbaa220.jpg?im_w=720"
     ],
+    ical_url: "https://www.airbnb.gr/calendar/ical/49432465.ics?t=812af2806dee48ba8e753ac298c3c4b2", // ΠΑΣΤΕ ΤΟ AIRBNB ICAL LINK ΤΟΥ ΓΑΒΒΑΘΑ ΕΔΩ (ανάμεσα στα αυτάκια)
     blocked_dates: []
   },
   {
@@ -47,6 +48,7 @@ const LOCAL_PROPERTIES = [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-963513247135914909/original/00dd30e2-d61c-445e-a95c-cd0cdd835316.jpeg?im_w=720",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTYzNTEzMjQ3MTM1OTE0OTA5/original/a981a56a-faa5-413a-af4a-d0c08fda1350.jpeg?im_w=720"
     ],
+    ical_url: "https://www.airbnb.gr/calendar/ical/963513247135914909.ics?t=5f8b189366714472a934afdcd8e211fe", // ΠΑΣΤΕ ΤΟ AIRBNB ICAL LINK ΤΗΣ ΒΙΛΑΣ ΕΡΜΗΣ ΕΔΩ (ανάμεσα στα αυτάκια)
     blocked_dates: []
   }
 ];
@@ -60,8 +62,8 @@ const LOCAL_MAP_LOCATIONS = [
     title_el: "Παραδοσιακό Πέτρινο Σπίτι",
     desc_en: "Luxury stone house in rural Gavathas.",
     desc_el: "Πολυτελές πέτρινο σπίτι στον παραθαλάσσιο Γαββαθά.",
-    latitude: 39.2830,
-    longitude: 25.9730,
+    latitude: 39.2744,
+    longitude: 25.9763,
     image_url: "https://a0.muscache.com/im/pictures/911a0e00-b2c7-47fc-820f-1c346f1a4f91.jpg?im_w=480"
   },
   {
@@ -72,8 +74,8 @@ const LOCAL_MAP_LOCATIONS = [
     title_el: "Βίλα Ερμής",
     desc_en: "Beautiful residence in Vareia, Mytilene.",
     desc_el: "Υπέροχη κατοικία στη Βαρειά Μυτιλήνης.",
-    latitude: 39.0800,
-    longitude: 26.5780,
+    latitude: 39.0820,
+    longitude: 26.5714,
     image_url: "https://a0.muscache.com/im/pictures/hosting/Hosting-963513247135914909/original/00dd30e2-d61c-445e-a95c-cd0cdd835316.jpeg?im_w=720"
   }
 ];
