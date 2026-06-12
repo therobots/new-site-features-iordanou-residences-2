@@ -18,23 +18,23 @@ export default function Home() {
     initialData: [],
   });
 
-  // Real Testimonials Data
+  // Real Testimonials from Airbnb
   const testimonials = [
     {
-      name: "Eleni",
-      location: "Google",
-      text_en: "The house is wonderful, traditional, very clean and comfortable. We felt like home.",
-      text_el: "Το σπίτι είναι υπέροχο, παραδοσιακό, πολύ καθαρό και άνετο. Νιώσαμε σαν στο σπίτι μας."
+      name: "Refat",
+      location: "Airbnb",
+      text_en: "It was a great stay at Iordanou Residences. The house was exactly as described, very clean and peaceful.",
+      text_el: "Ήταν μια υπέροχη διαμονή στα Iordanou Residences. Το σπίτι ήταν ακριβώς όπως περιγράφεται, πολύ καθαρό και ήσυχο."
     },
     {
-      name: "Andreas",
-      location: "Google",
-      text_en: "Iordanou Residences is the best place to stay in Lesvos! Great hospitality and attention to detail.",
-      text_el: "Τα Iordanou Residences είναι το καλύτερο μέρος για διαμονή στη Λέσβο! Εξαιρετική φιλοξενία και προσοχή στη λεπτομέρεια."
+      name: "Athanasia",
+      location: "Airbnb",
+      text_en: "The house is absolutely wonderful, traditional, very clean and comfortable. We felt like home.",
+      text_el: "Το σπίτι είναι απόλυτα υπέροχο, παραδοσιακό, πολύ καθαρό και άνετο. Νιώσαμε σαν στο σπίτι μας."
     },
     {
       name: "George",
-      location: "Google",
+      location: "Airbnb",
       text_en: "Great location, very peaceful, and the garden is amazing. Perfect for a relaxing vacation.",
       text_el: "Εξαιρετική τοποθεσία, πολύ ήσυχα, και ο κήπος είναι καταπληκτικός. Τέλειο για χαλαρωτικές διακοπές."
     }
@@ -42,7 +42,6 @@ export default function Home() {
 
   return (
     <div>
-      {/* 1. HERO SECTION */}
       <section className="relative overflow-hidden bg-slate-900 text-white min-h-[70vh] flex items-center">
         <div className="absolute inset-0 z-0">
           <img 
@@ -85,7 +84,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. PROPERTIES SHOWCASE */}
       <section id="properties" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
         <div className="text-center mb-10 sm:mb-14">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">{t('ourResidences')}</h2>
@@ -112,7 +110,6 @@ export default function Home() {
         )}
       </section>
 
-      {/* 3. TESTIMONIALS */}
       <section className="bg-muted/30 border-y border-border/50 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -147,7 +144,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. WHY BOOK DIRECT */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground text-center mb-12">{t('whyBook')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -193,7 +189,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. MEET YOUR HOST */}
       <section className="bg-foreground text-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
