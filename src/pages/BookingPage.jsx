@@ -5,14 +5,13 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import BookingCalendar from '@/components/BookingCalendar';
 import PriceSummary, { calculatePricing } from '@/components/PriceSummary';
-import { ArrowLeft, MessageCircle, Calendar, Home, Info, MapPin, Users, Minus, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MessageCircle, Calendar, Home, Info, MapPin, Users } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Calendar, Home, MapPin, Users, Minus, Plus } from 'lucide-react';
 import { format, differenceInDays } from 'date-fns';
 import { motion } from 'framer-motion';
 
-const WHATSAPP_NUMBER = '306988011845'; // Make sure this matches your phone number
+const WHATSAPP_NUMBER = '306988011845';
 
 export default function BookingPage() {
   const { t, localField, lang } = useLanguage();
@@ -22,7 +21,7 @@ export default function BookingPage() {
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
   const [couponData, setCouponData] = useState(null);
-  const [guests, setGuests] = useState(2); // Αρχικοποίηση στα 2 άτομα
+  const [guests, setGuests] = useState(2);
 
   const { data: properties = [] } = useQuery({
     queryKey: ['properties-list'],
@@ -75,7 +74,7 @@ export default function BookingPage() {
                 `• Κωδικός Προσφοράς: ${coupon}\n` +
                 `• Συνολικό Ποσό: €${pricing.total.toFixed(2)}`;
 
-    const url = `https://wa.me/306988011845?text=${encodeURIComponent(msg)}`;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
   };
 
@@ -112,7 +111,6 @@ export default function BookingPage() {
             </select>
           </div>
 
-          {/* 👥 Σύνδεση Μετρητή Ατόμων */}
           {activeProperty && (
             <div className="flex items-center justify-between p-4 bg-muted/40 rounded-xl border border-border/40">
               <div className="flex items-center gap-3">
@@ -132,14 +130,14 @@ export default function BookingPage() {
                   variant="outline" size="icon" className="w-8 h-8 rounded-full"
                   onClick={() => setGuests(prev => Math.max(1, prev - 1))}
                 >
-                  -
+                  <Minus className="w-3 h-3" />
                 </Button>
                 <span className="font-heading font-bold text-lg w-4 text-center">{guests}</span>
                 <Button 
                   variant="outline" size="icon" className="w-8 h-8 rounded-full"
                   onClick={() => setGuests(prev => Math.min(maxAllowedGuests, prev + 1))}
                 >
-                  +
+                  <Plus className="w-3 h-3" />
                 </Button>
               </div>
             </div>
