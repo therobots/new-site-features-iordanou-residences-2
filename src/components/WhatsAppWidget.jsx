@@ -1,9 +1,11 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function WhatsAppWidget() {
-  const phoneNumber = "306988011845"; // Replace with actual host number
-  const message = encodeURIComponent("Hello! I'm interested in booking at Iordanou Residences.");
+  const { t } = useLanguage();
+  const phoneNumber = "306988011845"; 
+  const message = encodeURIComponent(t('waInterest'));
 
   return (
     <a
@@ -15,7 +17,7 @@ export default function WhatsAppWidget() {
     >
       <MessageCircle className="w-7 h-7 text-white" />
       <span className="absolute -top-10 right-0 bg-foreground text-background text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-body">
-        Chat with us
+        {t('chatWithUs')}
       </span>
     </a>
   );
