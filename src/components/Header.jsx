@@ -20,7 +20,7 @@ export default function Header() {
               <span className="font-heading text-lg font-semibold text-foreground tracking-tight">
                 {t('brand')}
               </span>
-              <p className="text-[11px] text-muted-foreground -mt-0.5 font-body">Lesvos, Greece</p>
+              <p className="text-[11px] text-muted-foreground -mt-0.5 font-body">{t('lesvosGreece')}</p>
             </div>
           </Link>
 
