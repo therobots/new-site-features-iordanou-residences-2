@@ -3,11 +3,11 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import WhatsAppWidget from './WhatsAppWidget';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function Layout() {
   const location = useLocation();
 
-  // Scroll to top on every route or search parameter change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname, location.search]);
@@ -20,6 +20,7 @@ export default function Layout() {
       </main>
       <Footer />
       <WhatsAppWidget />
+      <Analytics />
     </div>
   );
 }
