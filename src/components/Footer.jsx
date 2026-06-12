@@ -24,13 +24,17 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2.5 text-background/60">
                 <Mail className="w-4 h-4 flex-shrink-0" />
-                {/* 1. REPLACE THE EMAIL BELOW */}
-                <span>iordanouresidences@gmail.com</span>
+                <a href="mailto:iordanouresidences@gmail.com" className="hover:text-background transition-colors">
+                  iordanouresidences@gmail.com
+                </a>
               </div>
               <div className="flex items-center gap-2.5 text-background/60">
                 <Phone className="w-4 h-4 flex-shrink-0" />
-                {/* 2. REPLACE THE PHONE NUMBER BELOW */}
-                <span>+30 6988011845 +30 6977629339</span>
+                <span>
+                  <a href="tel:+306988011845" className="hover:text-background transition-colors">+30 698 801 1845</a> 
+                  <span className="opacity-50 mx-2">|</span> 
+                  <a href="tel:+306977629339" className="hover:text-background transition-colors">+30 697 762 9339</a>
+                </span>
               </div>
             </div>
           </div>
@@ -38,6 +42,7 @@ export default function Footer() {
             <h4 className="font-body font-semibold text-background mb-3 text-sm uppercase tracking-wider">Quick Links</h4>
             <div className="space-y-2 text-sm font-body">
               <a href="/" className="block text-background/60 hover:text-background transition-colors">{t('home')}</a>
+              <a href="/residences" className="block text-background/60 hover:text-background transition-colors">{t('residences')}</a>
               <a href="/explore" className="block text-background/60 hover:text-background transition-colors">{t('explore')}</a>
             </div>
           </div>
