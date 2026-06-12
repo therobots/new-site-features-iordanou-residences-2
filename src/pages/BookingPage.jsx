@@ -5,6 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import BookingCalendar from '@/components/BookingCalendar';
 import PriceSummary, { calculatePricing } from '@/components/PriceSummary';
+import { ArrowLeft, MessageCircle, Calendar, Home, Info, MapPin, Users, Minus, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, MessageCircle, Calendar, Home, Info, MapPin, Users } from 'lucide-react';
