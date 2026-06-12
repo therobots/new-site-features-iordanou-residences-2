@@ -17,7 +17,7 @@ const LOCAL_PROPERTIES = [
       "https://a0.muscache.com/im/pictures/911a0e00-b2c7-47fc-820f-1c346f1a4f91.jpg?im_w=480&im_q=medq",
       "https://a0.muscache.com/im/pictures/f99819c4-4325-47b3-b991-d8ce6dbaa220.jpg?im_w=720"
     ],
-    ical_url: "https://www.airbnb.gr/calendar/ical/49432465.ics?t=812af2806dee48ba8e753ac298c3c4b2",
+   ical_url: import.meta.env.VITE_ICAL_URL_STONEHOUSE || '',   // ← αλλαγή
     blocked_dates: []
   },
   {
@@ -38,7 +38,7 @@ const LOCAL_PROPERTIES = [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-963513247135914909/original/00dd30e2-d61c-445e-a95c-cd0cdd835316.jpeg?im_w=720",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTYzNTEzMjQ3MTM1OTE0OTA5/original/a981a56a-faa5-413a-af4a-d0c08fda1350.jpeg?im_w=720"
     ],
-    ical_url: "https://www.airbnb.gr/calendar/ical/963513247135914909.ics?t=5f8b189366714472a934afdcd8e211fe",
+    ical_url: import.meta.env.VITE_ICAL_URL_VILLA_HERMES || '',  // ← αλλαγή
     blocked_dates: []
   }
 ];
