@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import PropertyCard from '@/components/PropertyCard';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Shield, CalendarCheck, Headphones, MapPin, Heart } from 'lucide-react';
+import { ArrowRight, Shield, CalendarCheck, Headphones, MapPin, Heart, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -17,6 +17,28 @@ export default function Home() {
     queryFn: () => base44.entities.Property.list(),
     initialData: [],
   });
+
+  // Testimonials Data
+  const testimonials = [
+    {
+      name: "Sarah M.",
+      location: "UK",
+      text_en: "Villa Hermes was exactly what we needed. Peaceful, beautifully designed, and just a short walk to the sea. The hosts were incredibly welcoming!",
+      text_el: "Η Βίλα Ερμής ήταν ακριβώς αυτό που χρειαζόμασταν. Ήσυχη, με υπέροχο design και μόλις λίγα βήματα από τη θάλασσα. Εξαιρετικοί οικοδεσπότες!"
+    },
+    {
+      name: "Γιώργος Π.",
+      location: "Ελλάδα",
+      text_en: "The stonehouse in Gavathas is a hidden paradise. The huge garden and the traditional architecture made our family vacation truly unforgettable.",
+      text_el: "Το πέτρινο σπίτι στον Γαββαθά είναι ένας κρυμμένος παράδεισος. Ο τεράστιος κήπος και η παραδοσιακή αρχιτεκτονική έκαναν τις διακοπές μας αξέχαστες."
+    },
+    {
+      name: "Lena K.",
+      location: "Germany",
+      text_en: "Perfect location to explore Lesvos! Direct booking saved us a lot of money and the communication via WhatsApp was super fast and easy.",
+      text_el: "Τέλεια τοποθεσία για να εξερευνήσεις τη Λέσβο! Η απευθείας κράτηση μας γλίτωσε χρήματα και η επικοινωνία στο WhatsApp ήταν άμεση."
+    }
+  ];
 
   return (
     <div>
@@ -40,7 +62,7 @@ export default function Home() {
           >
             <div className="flex items-center gap-2 mb-4">
               <MapPin className="w-4 h-4 text-sky-400" />
-              <span className="text-sm font-body font-medium text-sky-300 tracking-wide">Lesvos, Greece</span>
+              <span className="text-sm font-body font-medium text-sky-300 tracking-wide">{t('lesvosGreece')}</span>
             </div>
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
               {t('heroTitle')}
@@ -63,7 +85,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. PROPERTIES SHOWCASE (CENTERED FOR 2 ITEMS) */}
+      {/* 2. PROPERTIES SHOWCASE */}
       <section id="properties" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
         <div className="text-center mb-10 sm:mb-14">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">{t('ourResidences')}</h2>
@@ -90,85 +112,121 @@ export default function Home() {
         )}
       </section>
 
-      {/* 3. WHY BOOK DIRECT */}
-      <section className="bg-card border-y border-border/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground text-center mb-10">{t('whyBook')}</h2>
+      {/* 3. TESTIMONIALS (NEW!) */}
+      <section className="bg-muted/30 border-y border-border/50 py-16 sm:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="font-heading text-3xl font-bold text-foreground mb-3">
+              {lang === 'en' ? 'What Our Guests Say' : 'Τι Λένε οι Επισκέπτες μας'}
+            </h2>
+            <p className="font-body text-muted-foreground">
+              {lang === 'en' ? 'Real experiences from Iordanou Residences' : 'Πραγματικές εμπειρίες στα Iordanou Residences'}
+            </p>
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            
-            {/* Κάρτα 1 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0 }}
-              className="text-center p-6"
-            >
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{t('reason1Title')}</h3>
-              <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason1Desc')}</p>
-            </motion.div>
-
-            {/* Κάρτα 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-center p-6"
-            >
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <CalendarCheck className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{t('reason2Title')}</h3>
-              <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason2Desc')}</p>
-            </motion.div>
-
-            {/* Κάρτα 3 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="text-center p-6"
-            >
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Headphones className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{t('reason3Title')}</h3>
-              <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason3Desc')}</p>
-            </motion.div>
-
+            {testimonials.map((review, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-card border border-border/60 p-6 sm:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="flex gap-1 mb-4">
+                  {[1,2,3,4,5].map(star => <Star key={star} className="w-4 h-4 fill-primary text-primary" />)}
+                </div>
+                <p className="font-body text-foreground/80 leading-relaxed text-sm sm:text-base mb-6 italic">
+                  "{lang === 'en' ? review.text_en : review.text_el}"
+                </p>
+                <div className="mt-auto border-t border-border/40 pt-4">
+                  <p className="font-heading font-bold text-foreground text-sm">{review.name}</p>
+                  <p className="font-body text-muted-foreground text-xs">{review.location}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 4. MEET YOUR HOST SECTION */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center bg-muted/30 border border-border/40 rounded-2xl p-6 sm:p-10 shadow-sm">
-          <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-md border border-border/20 bg-muted">
-            <img 
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcyYGjg8X8FBcAX12eUK7fxYEwzad7CW5og&s" 
-              alt="Our Family" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          
-          <div className="space-y-4">
-            <div className="flex items-center gap-1.5 text-primary text-xs font-body font-bold uppercase tracking-wider">
-              <Heart className="w-3.5 h-3.5 fill-current" />
-              {lang === 'en' ? 'Authentic Hospitality' : 'Αυθεντική Φιλοξενία'}
+      {/* 4. WHY BOOK DIRECT */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground text-center mb-12">{t('whyBook')}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Κάρτα 1 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0 }}
+            className="text-center p-6 bg-card border border-border/40 rounded-2xl shadow-sm"
+          >
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
+              <Shield className="w-7 h-7 text-primary" />
             </div>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground">
-              {lang === 'en' ? 'Meet the Owner' : 'Γνωρίστε τον Οικοδεσπότη'}
-            </h2>
-            <p className="font-body text-sm sm:text-base text-muted-foreground leading-relaxed whitespace-pre-line">
-              {lang === 'en' 
-                ? "Welcome to Iordanou Residences. We lovingly care for these holiday homes to preserve traditional Aegean architecture while offering a modern, peaceful escape on Lesvos.\n\nWhen you book directly with us, you aren't dealing with automated management systems or hidden agency split-fees—you are staying with a real local family dedicated to making your Greek summer unforgettable."
-                : "Καλώς ήρθατε στις Κατοικίες Ιορδάνου. Φροντίζουμε με αγάπη αυτά τα εξοχικά σπίτια για να διατηρήσουμε την παραδοσιακή αρχιτεκτονική του Αιγαίου, προσφέροντας παράλληλα μια σύγχρονη, ήσυχη απόδραση στη Λέσβο.\n\nΌταν κάνετε κράτηση απευθείας μαζί μας, επικοινωνείτε απευθείας με την οικογένειά μας, εξασφαλίζοντας την καλύτερη τιμή χωρίς κρυφές προμήθειες πλατφορμών."}
-            </p>
+            <h3 className="font-heading text-lg font-semibold text-foreground mb-3">{t('reason1Title')}</h3>
+            <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason1Desc')}</p>
+          </motion.div>
+
+          {/* Κάρτα 2 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-center p-6 bg-card border border-border/40 rounded-2xl shadow-sm"
+          >
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
+              <CalendarCheck className="w-7 h-7 text-primary" />
+            </div>
+            <h3 className="font-heading text-lg font-semibold text-foreground mb-3">{t('reason2Title')}</h3>
+            <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason2Desc')}</p>
+          </motion.div>
+
+          {/* Κάρτα 3 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-center p-6 bg-card border border-border/40 rounded-2xl shadow-sm"
+          >
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
+              <Headphones className="w-7 h-7 text-primary" />
+            </div>
+            <h3 className="font-heading text-lg font-semibold text-foreground mb-3">{t('reason3Title')}</h3>
+            <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason3Desc')}</p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 5. MEET YOUR HOST SECTION */}
+      <section className="bg-foreground text-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-background/10">
+              <img 
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcyYGjg8X8FBcAX12eUK7fxYEwzad7CW5og&s" 
+                alt="Our Family" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            
+            <div className="space-y-6">
+              <div className="flex items-center gap-2 text-primary text-xs font-body font-bold uppercase tracking-wider">
+                <Heart className="w-4 h-4 fill-current" />
+                {lang === 'en' ? 'Authentic Hospitality' : 'Αυθεντική Φιλοξενία'}
+              </div>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold">
+                {lang === 'en' ? 'Meet the Owner' : 'Γνωρίστε τον Οικοδεσπότη'}
+              </h2>
+              <p className="font-body text-base text-background/70 leading-relaxed whitespace-pre-line">
+                {lang === 'en' 
+                  ? "Welcome to Iordanou Residences. We lovingly care for these holiday homes to preserve traditional Aegean architecture while offering a modern, peaceful escape on Lesvos.\n\nWhen you book directly with us, you aren't dealing with automated management systems or hidden agency split-fees—you are staying with a real local family dedicated to making your Greek summer unforgettable."
+                  : "Καλώς ήρθατε στα Iordanou Residences. Φροντίζουμε με αγάπη αυτά τα εξοχικά σπίτια για να διατηρήσουμε την παραδοσιακή αρχιτεκτονική του Αιγαίου, προσφέροντας παράλληλα μια σύγχρονη, ήσυχη απόδραση στη Λέσβο.\n\nΌταν κάνετε κράτηση απευθείας μαζί μας, επικοινωνείτε απευθείας με την οικογένειά μας, εξασφαλίζοντας την καλύτερη τιμή χωρίς κρυφές προμήθειες πλατφορμών."}
+              </p>
+            </div>
           </div>
         </div>
       </section>
