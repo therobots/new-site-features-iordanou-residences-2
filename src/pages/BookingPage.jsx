@@ -163,6 +163,7 @@ export default function BookingPage() {
                 <BookingCalendar
                   blockedDates={activeProperty.blocked_dates || []}
                   bookings={[]}
+                  icalUrl={activeProperty.ical_url}
                   onDateSelect={handleDateSelect}
                   checkIn={checkIn}
                   checkOut={checkOut}
