@@ -12,7 +12,7 @@ import { ArrowLeft, MessageCircle, Calendar, Home, Info, MapPin, Users } from 'l
 import { format, differenceInDays } from 'date-fns';
 import { motion } from 'framer-motion';
 
-const WHATSAPP_NUMBER = '306900000000'; // Make sure this matches your phone number
+const WHATSAPP_NUMBER = '306988011845'; // Make sure this matches your phone number
 
 export default function BookingPage() {
   const { t, localField, lang } = useLanguage();
@@ -23,15 +23,14 @@ export default function BookingPage() {
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
   const [couponData, setCouponData] = useState(null);
+  const [guests, setGuests] = useState(2); // Αρχικοποίηση στα 2 άτομα
 
-  // Fetch your fleet of properties from your local client hub
   const { data: properties = [] } = useQuery({
     queryKey: ['properties-list'],
     queryFn: () => base44.entities.Property.list(),
     initialData: [],
   });
 
-  // Automatically sync search string parameters (e.g., /book?house=olive-grove-cottage)
   useEffect(() => {
     const houseParam = searchParams.get('house');
     if (houseParam) {
@@ -41,19 +40,18 @@ export default function BookingPage() {
     }
   }, [searchParams, properties]);
 
-  // Handle changing properties inside the dropdown menu
   const handlePropertyChange = (e) => {
     const newId = e.target.value;
     setSelectedPropertyId(newId);
     setSearchParams({ house: newId });
-    // Reset calendar choices to prevent overbooking checks across different houses
     setCheckIn(null);
     setCheckOut(null);
     setCouponData(null);
+    setGuests(2); // Reset στους 2 επισκέπτες
   };
 
-  // Find active property details block matching the dropdown state
   const activeProperty = properties.find(p => p.id === selectedPropertyId);
+  const maxAllowedGuests = activeProperty?.max_guests || 6;
 
   const handleDateSelect = (ci, co) => {
     setCheckIn(ci);
@@ -63,21 +61,23 @@ export default function BookingPage() {
 
   const handleWhatsAppSubmit = () => {
     if (!activeProperty || !checkIn || !checkOut) return;
-    const pricing = calculatePricing(activeProperty, checkIn, checkOut, couponData);
+    const pricing = calculatePricing(activeProperty, checkIn, checkOut, couponData, guests);
     const propertyName = localField(activeProperty, 'name');
     const ciStr = format(checkIn, 'dd/MM/yyyy');
     const coStr = format(checkOut, 'dd/MM/yyyy');
     const coupon = couponData?.code || (lang === 'el' ? 'Καμία' : 'None');
     
     const msg = `Hello! I would like to request a direct booking at Iordanou Residences.\n\n` +
-                `• House: ${propertyName}\n` +
+                `• Κατάλυμα: ${propertyName}\n` +
+                `• Επισκέπτες: ${guests} άτομα\n` +
                 `• Check-In: ${ciStr}\n` +
                 `• Check-Out: ${coStr}\n` +
-                `• Total Duration: ${pricing.nights} nights\n` +
-                `• Promo Code: ${coupon}\n` +
-                `• Total Estimated Price: €${pricing.total.toFixed(2)}`;
+                `• Διαμονή: ${pricing.nights} νύχτες\n` +
+                `• Κωδικός Προσφοράς: ${coupon}\n` +
+                `• Συνολικό Ποσό: €${pricing.total.toFixed(2)}`;
 
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    // Χρήση του σωστού αριθμού κινητού σου από το context
+    const url = `https://wa.me/306988011845?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
   };
 
@@ -87,7 +87,7 @@ export default function BookingPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link to="/" className="inline-flex items-center gap-1.5 text-sm font-body text-muted-foreground hover:text-foreground transition-colors mb-6">
-        <ArrowLeft className="w-4 h-4" /> {t('backHome') || 'Back to Overview'}
+        <ArrowLeft className="w-4 h-4" /> {t('backHome')}
       </Link>
 
       <div className="text-center mb-10">
@@ -100,10 +100,9 @@ export default function BookingPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Selection Columns */}
         <div className="lg:col-span-2 space-y-6 bg-card border border-border/60 rounded-xl p-5 sm:p-6 shadow-sm">
           
-          {/* House Selector Dropdown Dropdown */}
+          {/* House Selector */}
           <div>
             <label className="block text-sm font-body font-semibold text-foreground mb-2 flex items-center gap-1.5">
               <Home className="w-4 h-4 text-primary" />
@@ -120,9 +119,41 @@ export default function BookingPage() {
             </select>
           </div>
 
+          {/* 👥 ΝΕΟ: UI Μετρητής Επισκεπτών */}
+          {activeProperty && (
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-xl border border-border/40">
+              <div className="flex items-center gap-3">
+                <Users className="w-5 h-5 text-primary" />
+                <div>
+                  <p className="text-sm font-body font-semibold text-foreground">
+                    {lang === 'el' ? 'Αριθμός Επισκεπτών' : 'Number of Guests'}
+                  </p>
+                  <p className="text-xs text-muted-foreground font-body">
+                    {lang === 'el' ? 'επιπλέον χρέωση +€15/νύχτα μετά τα 2 άτομα' : '€15/night fee after 2 guests'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <button 
+                  onClick={() => setGuests(prev => Math.max(1, prev - 1))}
+                  className="w-9 h-9 flex items-center justify-center rounded-full border border-border bg-white hover:bg-slate-50 active:scale-95 transition-all shadow-sm"
+                >
+                  <Minus className="w-4 h-4 text-foreground" />
+                </button>
+                <span className="font-heading font-bold text-lg w-4 text-center">{guests}</span>
+                <button 
+                  onClick={() => setGuests(prev => Math.min(maxAllowedGuests, prev + 1))}
+                  className="w-9 h-9 flex items-center justify-center rounded-full border border-border bg-white hover:bg-slate-50 active:scale-95 transition-all shadow-sm"
+                >
+                  <Plus className="w-4 h-4 text-foreground" />
+                </button>
+              </div>
+            </div>
+          )}
+
           {activeProperty && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-              {/* Mini Preview Deck */}
               <div className="flex gap-4 p-3 bg-muted/40 rounded-lg items-center border border-border/30">
                 <img src={activeProperty.image_urls?.[0]} alt="" className="w-24 h-16 object-cover rounded-md" />
                 <div>
@@ -133,14 +164,13 @@ export default function BookingPage() {
                 </div>
               </div>
 
-              {/* Dynamic Calendar Module */}
               <div>
                 <label className="block text-sm font-body font-semibold text-foreground mb-2 flex items-center gap-1.5">
                   <Calendar className="w-4 h-4 text-primary" />
-                  {t('selectDates') || 'Select Stay Horizon'}
+                  {t('selectDates')}
                 </label>
                 <p className="text-xs text-muted-foreground font-body mb-3 flex items-center gap-1">
-                  <Info className="w-3 h-3" /> {t('minStay') || 'Minimum stay requirement: 2 nights'}
+                  <Info className="w-3 h-3" /> {t('minStay')}
                 </p>
                 <BookingCalendar
                   blockedDates={activeProperty.blocked_dates || []}
@@ -154,15 +184,10 @@ export default function BookingPage() {
           )}
         </div>
 
-        {/* Dynamic Airbnb-Style Pricing Sidebar */}
+        {/* Sidebar Pricing Layout */}
         <div className="space-y-4 lg:sticky lg:top-6">
           {activeProperty && (
             <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
-              <div className="text-center pb-4 border-b border-border/50 mb-4">
-                <span className="font-heading text-3xl font-bold text-foreground">€{activeProperty.base_price_per_night}</span>
-                <span className="text-muted-foreground font-body text-sm"> / {t('perNight')}</span>
-              </div>
-
               {canBook ? (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <PriceSummary
@@ -171,13 +196,14 @@ export default function BookingPage() {
                     checkOut={checkOut}
                     couponData={couponData}
                     onCouponApplied={setCouponData}
+                    guests={guests} // Πέρασμα των επισκεπτών στο summary
                   />
                   <Button
                     className="w-full bg-green-600 hover:bg-green-700 text-white font-body font-semibold h-12 mt-4 gap-2 shadow-sm transition-all"
                     onClick={handleWhatsAppSubmit}
                   >
                     <MessageCircle className="w-4 h-4" />
-                    {t('whatsappCTA') || 'Request via WhatsApp'}
+                    {t('whatsappCTA')}
                   </Button>
                 </motion.div>
               ) : (
