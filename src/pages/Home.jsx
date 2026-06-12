@@ -95,26 +95,52 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground text-center mb-10">{t('whyBook')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {[
-              { icon: Shield, titleKey: 'reason1Title', descKey: 'reason1Desc' },
-              { icon: CalendarCheck, titleKey: 'reason2Title', descKey: 'reason2Desc' },
-              { icon: Headphones, titleKey: 'reason3Title', descKey: 'reason3Desc' },
-            ].map(({ icon: Icon, titleKey, descKey }, i) => (
-              <motion.div
-                key={titleKey}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="text-center p-6"
-              >
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Icon className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{t(titleKey)}</h3>
-                <p className="font-body text-sm text-muted-foreground leading-relaxed">{t(descKey)}</p>
-              </motion.div>
-            ))}
+            
+            {/* Κάρτα 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0 }}
+              className="text-center p-6"
+            >
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{t('reason1Title')}</h3>
+              <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason1Desc')}</p>
+            </motion.div>
+
+            {/* Κάρτα 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-center p-6"
+            >
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <CalendarCheck className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{t('reason2Title')}</h3>
+              <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason2Desc')}</p>
+            </motion.div>
+
+            {/* Κάρτα 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-center p-6"
+            >
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Headphones className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{t('reason3Title')}</h3>
+              <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason3Desc')}</p>
+            </motion.div>
+
           </div>
         </div>
       </section>
