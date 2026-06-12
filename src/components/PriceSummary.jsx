@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { Tag, Check, AlertCircle, Info } from 'lucide-react';
 import { differenceInDays, eachDayOfInterval, subDays } from 'date-fns';
 
-// 🛠️ Ενιαία μαθηματική λογική για υπολογισμό Εποχικότητας & Επισκεπτών
 export function calculatePricing(property, checkIn, checkOut, couponData, guests = 2) {
   if (!checkIn || !checkOut || !property) {
     return { nights: 0, subtotal: 0, extraGuestFeeTotal: 0, weeklyDiscountAmount: 0, couponDiscountAmount: 0, total: 0 };
@@ -48,27 +47,18 @@ export function calculatePricing(property, checkIn, checkOut, couponData, guests
     extraGuestFeeTotal = (guests - BASE_GUEST_LIMIT) * EXTRA_GUEST_FEE_PER_NIGHT * nights;
   }
 
-  // Το συνολικό κόστος προ εκπτώσεων
   const totalBeforeDiscounts = subtotal + extraGuestFeeTotal;
 
   // 3. Εκπτώσεις
   const hasWeeklyDiscount = nights >= 7;
-  const weeklyDiscountAmount = hasWeeklyDiscount ? totalBeforeDiscounts * 0.1 : 0; // 10% έκπτωση
+  const weeklyDiscountAmount = hasWeeklyDiscount ? totalBeforeDiscounts * 0.1 : 0;
   const afterWeekly = totalBeforeDiscounts - weeklyDiscountAmount;
 
   const couponDiscountPct = couponData?.discount_percentage || 0;
   const couponDiscountAmount = afterWeekly * (couponDiscountPct / 100);
   const total = afterWeekly - couponDiscountAmount;
 
-  return { 
-    nights, 
-    subtotal, 
-    extraGuestFeeTotal, 
-    weeklyDiscountAmount, 
-    couponDiscountAmount, 
-    total, 
-    hasWeeklyDiscount 
-  };
+  return { nights, subtotal, extraGuestFeeTotal, weeklyDiscountAmount, couponDiscountAmount, total, hasWeeklyDiscount };
 }
 
 export default function PriceSummary({ property, checkIn, checkOut, couponData, onCouponApplied, guests = 2 }) {
@@ -154,13 +144,7 @@ export default function PriceSummary({ property, checkIn, checkOut, couponData, 
             onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
             className="font-body text-sm"
           />
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleApplyCoupon}
-            disabled={applying}
-            className="font-body whitespace-nowrap"
-          >
+          <Button variant="outline" size="sm" onClick={handleApplyCoupon} disabled={applying} className="font-body whitespace-nowrap">
             {t('apply')}
           </Button>
         </div>
@@ -175,12 +159,6 @@ export default function PriceSummary({ property, checkIn, checkOut, couponData, 
       {couponError && (
         <p className="text-xs text-destructive font-body flex items-center gap-1">
           <AlertCircle className="w-3 h-3" /> {couponError}
-        </p>
-      )}
-
-      {nights < 2 && (
-        <p className="text-xs text-amber-600 font-body flex items-center gap-1.5 bg-amber-50 p-2.5 rounded-lg">
-          <Info className="w-3.5 h-3.5 flex-shrink-0" /> {t('minStay')}
         </p>
       )}
     </div>
