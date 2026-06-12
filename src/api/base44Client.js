@@ -9,12 +9,13 @@ const LOCAL_PROPERTIES = [
     max_guests: 8,
     bedrooms: 3,
     bathrooms: 2,
-    base_price_per_night: 180,
+    seasonal_pricing: { 6: 250, 7: 260, 8: 280 }, // Ιούνιος, Ιούλιος, Αύγουστος
+    base_price_per_night: 250, // Default αν δεν είναι σε αυτούς τους μήνες
     amenities: ["WiFi", "Parking", "Air Conditioning", "Kitchen", "Garden"],
     description: "Traditional stone house in Gavathas, 200m from the sea.",
     image_urls: [
-      "https://a0.muscache.com/im/pictures/911a0e00-b2c7-47fc-820f-1c346f1a4f91.jpg?im_w=480&im_q=medq",
-      "https://a0.muscache.com/im/pictures/f99819c4-4325-47b3-b991-d8ce6dbaa220.jpg?im_w=720"
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800"
     ],
     ical_url: "https://www.airbnb.gr/calendar/ical/49432465.ics?t=812af2806dee48ba8e753ac298c3c4b2",
     blocked_dates: []
@@ -29,17 +30,20 @@ const LOCAL_PROPERTIES = [
     max_guests: 6,
     bedrooms: 3,
     bathrooms: 2,
-    base_price_per_night: 140,
+    seasonal_pricing: { 6: 160, 7: 165, 8: 175 }, // Ιούνιος, Ιούλιος, Αύγουστος
+    base_price_per_night: 160,
     amenities: ["WiFi", "Parking", "Air Conditioning", "Kitchen", "Garden"],
     description: "Beautiful residence in Vareia, Mytilene.",
     image_urls: [
-      "https://a0.muscache.com/im/pictures/hosting/Hosting-963513247135914909/original/00dd30e2-d61c-445e-a95c-cd0cdd835316.jpeg?im_w=720",
-      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTYzNTEzMjQ3MTM1OTE0OTA5/original/a981a56a-faa5-413a-af4a-d0c08fda1350.jpeg?im_w=720"
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800"
     ],
     ical_url: "https://www.airbnb.gr/calendar/ical/963513247135914909.ics?t=5f8b189366714472a934afdcd8e211fe",
     blocked_dates: []
   }
 ];
+
+// ... LOCAL_MAP_LOCATIONS και base44 export παραμένουν ως έχουν ...
 
 const LOCAL_MAP_LOCATIONS = [
   // Καταλύματα (με τις δικές σου φωτογραφίες)
