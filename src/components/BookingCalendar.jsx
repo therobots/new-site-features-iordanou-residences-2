@@ -1,18 +1,55 @@
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, isAfter, isBefore, startOfDay, addDays } from 'date-fns';
+import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isAfter, isBefore, startOfDay, addDays } from 'date-fns';
 import { el, enUS } from 'date-fns/locale';
 
-export default function BookingCalendar({ blockedDates = [], bookings = [], onDateSelect, checkIn, checkOut }) {
+export default function BookingCalendar({ blockedDates = [], bookings = [], icalUrl, onDateSelect, checkIn, checkOut }) {
   const { lang } = useLanguage();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const locale = lang === 'el' ? el : enUS;
 
+  // Auto-fetch Airbnb iCal data via CORS Proxy
+  const { data: airbnbBlockedDates = [] } = useQuery({
+    queryKey: ['ical', icalUrl],
+    queryFn: async () => {
+      if (!icalUrl) return [];
+      try {
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(icalUrl)}`;
+        const res = await fetch(proxyUrl);
+        const text = await res.text();
+        const dates = new Set();
+        
+        const events = text.split('BEGIN:VEVENT');
+        for (let i = 1; i < events.length; i++) {
+          const startMatch = events[i].match(/DTSTART(?:;.*?)?:([0-9]{8})/);
+          const endMatch = events[i].match(/DTEND(?:;.*?)?:([0-9]{8})/);
+          if (startMatch && endMatch) {
+            const startStr = startMatch[1];
+            const endStr = endMatch[1];
+            let current = new Date(startStr.substring(0,4), parseInt(startStr.substring(4,6))-1, startStr.substring(6,8));
+            const endDate = new Date(endStr.substring(0,4), parseInt(endStr.substring(4,6))-1, endStr.substring(6,8));
+            
+            while (current < endDate) {
+              dates.add(format(current, 'yyyy-MM-dd'));
+              current = addDays(current, 1);
+            }
+          }
+        }
+        return Array.from(dates);
+      } catch (err) {
+        console.error("Airbnb Sync Error:", err);
+        return [];
+      }
+    },
+    enabled: !!icalUrl,
+    staleTime: 1000 * 60 * 30, // 30 minutes cache
+  });
+
   const blockedSet = useMemo(() => {
-    const set = new Set();
-    blockedDates.forEach(d => set.add(d));
+    const set = new Set([...blockedDates, ...airbnbBlockedDates]);
     bookings.forEach(b => {
       if (b.booking_status === 'cancelled') return;
       let cur = new Date(b.check_in_date);
@@ -23,7 +60,7 @@ export default function BookingCalendar({ blockedDates = [], bookings = [], onDa
       }
     });
     return set;
-  }, [blockedDates, bookings]);
+  }, [blockedDates, airbnbBlockedDates, bookings]);
 
   const today = startOfDay(new Date());
 
@@ -46,7 +83,6 @@ export default function BookingCalendar({ blockedDates = [], bookings = [], onDa
       } else if (isSameDay(date, checkIn)) {
         return;
       } else {
-        // Check if any blocked date is in the range
         let cur = addDays(checkIn, 1);
         while (isBefore(cur, date)) {
           if (isBlocked(cur)) {
@@ -93,7 +129,7 @@ export default function BookingCalendar({ blockedDates = [], bookings = [], onDa
                 disabled={blocked}
                 className={`
                   relative h-10 text-sm font-body rounded-md transition-all
-                  ${blocked ? 'text-muted-foreground/40 cursor-not-allowed line-through' : 'cursor-pointer hover:bg-primary/10'}
+                  ${blocked ? 'text-muted-foreground/40 cursor-not-allowed line-through bg-muted/20' : 'cursor-pointer hover:bg-primary/10'}
                   ${selected ? 'bg-primary text-primary-foreground font-semibold shadow-sm' : ''}
                   ${inRange ? 'bg-primary/15 text-primary' : ''}
                   ${!blocked && !selected && !inRange ? 'text-foreground' : ''}
