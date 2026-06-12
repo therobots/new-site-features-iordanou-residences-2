@@ -106,7 +106,7 @@ const translations = {
     location: "Location",
     beach: "Beach",
     heroTitle: "Your Greek Island Escape",
-    heroSubtitle: "Three hand-picked traditional homes, nestled in the heart of Lesvos",
+    heroSubtitle: "Two hand-picked traditional homes, nestled in the heart of Lesvos",
     whyBook: "Why Book Direct?",
     reason1Title: "Best Price Guaranteed",
     reason1Desc: "No middleman fees. The price you see is the best available.",
@@ -126,7 +126,7 @@ const translations = {
     brand: "Ιορδάνου Residences",
     tagline: "Παραδοσιακά σπίτια διακοπών στο νησί της Λέσβου",
     home: "Αρχική",
-    explore: "Εξερεύνα τη Λέσβο",
+    explore: "Εξερεύνησε τη Λέσβο",
     dashboard: "Πίνακας Ελέγχου",
     bookDirectly: "Κράτηση Απευθείας",
     sleepsUpTo: "Χωρητικότητα έως",
@@ -167,7 +167,7 @@ const translations = {
     landmarks: "Τοπικά Αξιοθέατα",
     hiddenLocations: "Παραλίες & Τοποθεσίες",
     allCategories: "Όλα",
-    exploreTitle: "Εξερεύνα τη Λέσβο",
+    exploreTitle: "Εξερεύνησε τη Λέσβο",
     exploreSubtitle: "Ανακαλύψτε τα κρυφά διαμάντια και την αιώνια ομορφιά του νησιού μας",
     mapView: "Χάρτης",
     gridView: "Πλέγμα",
@@ -225,7 +225,7 @@ const translations = {
     location: "Τοποθεσία",
     beach: "Παραλία",
     heroTitle: "Η Ελληνική σας Απόδραση",
-    heroSubtitle: "Τρία επιλεγμένα παραδοσιακά σπίτια, στην καρδιά της Λέσβου",
+    heroSubtitle: "Δύο επιλεγμένα παραδοσιακά σπίτια, στην καρδιά της Λέσβου",
     whyBook: "Γιατί Απευθείας Κράτηση;",
     reason1Title: "Εγγύηση Καλύτερης Τιμής",
     reason1Desc: "Χωρίς μεσάζοντες. Η τιμή που βλέπετε είναι η καλύτερη διαθέσιμη.",
@@ -233,7 +233,7 @@ const translations = {
     reason2Desc: "Τα σχέδια αλλάζουν — το καταλαβαίνουμε. Ακυρώστε έως 7 μέρες πριν.",
     reason3Title: "Τοπική Υποστήριξη",
     reason3Desc: "Απευθείας επικοινωνία με τον οικοδεσπότη σας.",
-    exploreLesvos: "Εξερεύνα τη Λέσβο",
+    exploreLesvos: "Εξερεύνησε τη Λέσβο",
     discoverMore: "Μάθε Περισσότερα",
     addManualBooking: "Χειροκίνητη Κράτηση",
     bookingSource: "Πηγή Κράτησης",
@@ -244,14 +244,21 @@ const translations = {
 };
 
 export function LanguageProvider({ children }) {
-  const [lang, setLang] = useState('en');
+  const [lang, setLang] = useState(() => localStorage.getItem('iordanou_lang') || 'en');
+
+  const handleSetLang = (newLang) => {
+    setLang(newLang);
+    localStorage.setItem('iordanou_lang', newLang);
+  };
+
   const t = (key) => translations[lang]?.[key] || translations.en[key] || key;
   const localField = (obj, field) => {
     if (!obj) return '';
     return obj[`${field}_${lang}`] || obj[`${field}_en`] || '';
   };
+
   return (
-    <LanguageContext.Provider value={{ lang, setLang, t, localField }}>
+    <LanguageContext.Provider value={{ lang, setLang: handleSetLang, t, localField }}>
       {children}
     </LanguageContext.Provider>
   );
