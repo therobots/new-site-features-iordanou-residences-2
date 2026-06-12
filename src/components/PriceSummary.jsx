@@ -5,9 +5,73 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tag, Check, AlertCircle, Info } from 'lucide-react';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, eachDayOfInterval, subDays } from 'date-fns';
 
-export default function PriceSummary({ property, checkIn, checkOut, couponData, onCouponApplied }) {
+// 🛠️ Ενιαία μαθηματική λογική για υπολογισμό Εποχικότητας & Επισκεπτών
+export function calculatePricing(property, checkIn, checkOut, couponData, guests = 2) {
+  if (!checkIn || !checkOut || !property) {
+    return { nights: 0, subtotal: 0, extraGuestFeeTotal: 0, weeklyDiscountAmount: 0, couponDiscountAmount: 0, total: 0 };
+  }
+
+  const nights = differenceInDays(new Date(checkOut), new Date(checkIn));
+  if (nights <= 0) {
+    return { nights: 0, subtotal: 0, extraGuestFeeTotal: 0, weeklyDiscountAmount: 0, couponDiscountAmount: 0, total: 0 };
+  }
+
+  // 1. Υπολογισμός βασικής τιμής νύχτα-προς-νύχτα με βάση τον μήνα
+  const stayDays = eachDayOfInterval({ start: new Date(checkIn), end: subDays(new Date(checkOut), 1) });
+  let subtotal = 0;
+  
+  stayDays.forEach(day => {
+    const month = day.getMonth(); // 4 = Μάιος, 5 = Ιούνιος, 6 = Ιούλιος, 7 = Αύγουστος, 8 = Σεπτέμβριος, 9 = Οκτώβριος
+    
+    if (property.id === 'Villa Hermes') {
+      if (month === 4 || month === 9) subtotal += 140;      // Low Season (€140)
+      else if (month === 5 || month === 8) subtotal += 210; // Mid Season (€210)
+      else if (month === 6 || month === 7) subtotal += 320; // Peak Season (€320)
+      else subtotal += 140;
+    } else {
+      // traditional-stonehouse (Γαββαθάς)
+      if (month === 4 || month === 9) subtotal += 170;      // Low Season (€170)
+      else if (month === 5 || month === 8) subtotal += 255; // Mid Season (€255)
+      else if (month === 6 || month === 7) subtotal += 415; // Peak Season (€415)
+      else subtotal += 180;
+    }
+  });
+
+  // 2. Υπολογισμός Extra Guest Fee (+€15 ανά άτομο μετά τα 2 άτομα για κάθε νύχτα)
+  const BASE_GUEST_LIMIT = 2;
+  const EXTRA_GUEST_FEE_PER_NIGHT = 15;
+  let extraGuestFeeTotal = 0;
+
+  if (guests > BASE_GUEST_LIMIT) {
+    extraGuestFeeTotal = (guests - BASE_GUEST_LIMIT) * EXTRA_GUEST_FEE_PER_NIGHT * nights;
+  }
+
+  // Το συνολικό κόστος προ εκπτώσεων
+  const totalBeforeDiscounts = subtotal + extraGuestFeeTotal;
+
+  // 3. Εκπτώσεις
+  const hasWeeklyDiscount = nights >= 7;
+  const weeklyDiscountAmount = hasWeeklyDiscount ? totalBeforeDiscounts * 0.1 : 0; // 10% έκπτωση
+  const afterWeekly = totalBeforeDiscounts - weeklyDiscountAmount;
+
+  const couponDiscountPct = couponData?.discount_percentage || 0;
+  const couponDiscountAmount = afterWeekly * (couponDiscountPct / 100);
+  const total = afterWeekly - couponDiscountAmount;
+
+  return { 
+    nights, 
+    subtotal, 
+    extraGuestFeeTotal, 
+    weeklyDiscountAmount, 
+    couponDiscountAmount, 
+    total, 
+    hasWeeklyDiscount 
+  };
+}
+
+export default function PriceSummary({ property, checkIn, checkOut, couponData, onCouponApplied, guests = 2 }) {
   const { t } = useLanguage();
   const [couponCode, setCouponCode] = useState('');
   const [couponError, setCouponError] = useState('');
@@ -15,15 +79,15 @@ export default function PriceSummary({ property, checkIn, checkOut, couponData, 
 
   if (!checkIn || !checkOut || !property) return null;
 
-  const nights = differenceInDays(checkOut, checkIn);
-  const pricePerNight = property.base_price_per_night;
-  const subtotal = nights * pricePerNight;
-  const hasWeeklyDiscount = nights >= 7;
-  const weeklyDiscountAmount = hasWeeklyDiscount ? subtotal * 0.1 : 0;
-  const afterWeekly = subtotal - weeklyDiscountAmount;
-  const couponDiscountPct = couponData?.discount_percentage || 0;
-  const couponDiscountAmount = afterWeekly * (couponDiscountPct / 100);
-  const total = afterWeekly - couponDiscountAmount;
+  const {
+    nights,
+    subtotal,
+    extraGuestFeeTotal,
+    weeklyDiscountAmount,
+    couponDiscountAmount,
+    total,
+    hasWeeklyDiscount
+  } = calculatePricing(property, checkIn, checkOut, couponData, guests);
 
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) return;
@@ -45,9 +109,16 @@ export default function PriceSummary({ property, checkIn, checkOut, couponData, 
 
       <div className="space-y-2.5 text-sm font-body">
         <div className="flex justify-between text-muted-foreground">
-          <span>€{pricePerNight} × {nights} {nights > 1 ? t('nights') : t('night')}</span>
+          <span>Διαμονή ({nights} {nights > 1 ? t('nights') : t('night')})</span>
           <span>€{subtotal.toFixed(2)}</span>
         </div>
+
+        {guests > 2 && (
+          <div className="flex justify-between text-muted-foreground">
+            <span>Επιπλέον Επισκέπτες ({guests - 2} × €15 × {nights} νύχτες)</span>
+            <span className="text-emerald-600 font-medium">+€{extraGuestFeeTotal.toFixed(2)}</span>
+          </div>
+        )}
 
         {hasWeeklyDiscount && (
           <div className="flex justify-between text-green-600">
@@ -63,7 +134,7 @@ export default function PriceSummary({ property, checkIn, checkOut, couponData, 
           <div className="flex justify-between text-green-600">
             <span className="flex items-center gap-1.5">
               <Check className="w-3.5 h-3.5" />
-              {t('couponDiscount')} ({couponDiscountPct}%)
+              {t('couponDiscount')} ({couponData.discount_percentage}%)
             </span>
             <span>-€{couponDiscountAmount.toFixed(2)}</span>
           </div>
@@ -112,26 +183,6 @@ export default function PriceSummary({ property, checkIn, checkOut, couponData, 
           <Info className="w-3.5 h-3.5 flex-shrink-0" /> {t('minStay')}
         </p>
       )}
-
-      {hasWeeklyDiscount && (
-        <p className="text-xs text-green-700 font-body flex items-center gap-1.5 bg-green-50 p-2.5 rounded-lg">
-          <Info className="w-3.5 h-3.5 flex-shrink-0" /> {t('weeklyDiscountNote')}
-        </p>
-      )}
     </div>
   );
-}
-
-export function calculatePricing(property, checkIn, checkOut, couponData) {
-  const nights = differenceInDays(checkOut, checkIn);
-  const subtotal = nights * property.base_price_per_night;
-  const hasWeeklyDiscount = nights >= 7;
-  const weeklyDiscountAmount = hasWeeklyDiscount ? subtotal * 0.1 : 0;
-  const afterWeekly = subtotal - weeklyDiscountAmount;
-  const couponDiscountPct = couponData?.discount_percentage || 0;
-  const couponDiscountAmount = afterWeekly * (couponDiscountPct / 100);
-  const total = afterWeekly - couponDiscountAmount;
-  const totalDiscount = (hasWeeklyDiscount ? 10 : 0) + couponDiscountPct;
-
-  return { nights, subtotal, weeklyDiscountAmount, couponDiscountAmount, total, totalDiscount, hasWeeklyDiscount };
 }
