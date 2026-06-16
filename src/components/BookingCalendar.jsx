@@ -17,7 +17,7 @@ export default function BookingCalendar({ blockedDates = [], bookings = [], ical
     queryFn: async () => {
       if (!icalUrl) return [];
       try {
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(icalUrl)}`;
+        const proxyUrl = `/api/ical-proxy?url=${encodeURIComponent(icalUrl)}`;
         const res = await fetch(proxyUrl);
         const text = await res.text();
         const dates = new Set();
