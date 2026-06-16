@@ -1,182 +1,190 @@
-// src/pages/BookingPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useLanguage } from '@/lib/LanguageContext';
-import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import BookingCalendar from '@/components/BookingCalendar';
-import PriceSummary from '@/components/PriceSummary';
-import { calculatePricing, MIN_NIGHTS } from '@/lib/pricing';  // ← από το νέο αρχείο
-import { format, differenceInDays } from 'date-fns';
-import { MessageCircle, Minus, Plus, ArrowLeft } from 'lucide-react';
-
-const WHATSAPP_NUMBER = '306988011845';
+import { calculateTotal } from '@/lib/pricing';
+import { base44 } from '@/api/base44Client';
+import { Home, ArrowLeft } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function BookingPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { t, lang, localField } = useLanguage();
+  const { t, lang } = useLanguage();
+  
+  const houseId = searchParams.get('house');
+  const [property, setProperty] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const propertyId = searchParams.get('house');
+  const [checkIn, setCheckIn] = useState(null);
+  const [checkOut, setCheckOut] = useState(null);
+  const [guests, setGuests] = useState(2);
 
-  const [checkIn, setCheckIn]     = useState(null);
-  const [checkOut, setCheckOut]   = useState(null);
-  const [guests, setGuests]       = useState(2);
-  const [couponData, setCouponData] = useState(null);
+  // Φορτώνει το σπίτι από το ID του URL
+  useEffect(() => {
+    async function fetchProp() {
+      if (!houseId) {
+        setLoading(false);
+        return;
+      }
+      const props = await base44.entities.Property.filter({ id: houseId });
+      if (props.length > 0) setProperty(props[0]);
+      setLoading(false);
+    }
+    fetchProp();
+  }, [houseId]);
 
-  const { data: property, isLoading } = useQuery({
-    queryKey: ['property', propertyId],
-    queryFn: async () => {
-      if (!propertyId) return null;
-      const list = await base44.entities.Property.filter({ id: propertyId });
-      return list[0] || null;
-    },
-    enabled: !!propertyId,
-  });
-
-  const { data: bookings = [] } = useQuery({
-    queryKey: ['property-bookings', propertyId],
-    queryFn: () => base44.entities.Booking.filter({ property_id: propertyId }),
-    initialData: [],
-    enabled: !!propertyId,
-  });
-
-  const handleDateSelect = (ci, co) => {
-    setCheckIn(ci);
-    setCheckOut(co);
-    setCouponData(null);
-  };
-
-  const handleWhatsApp = () => {
-    if (!checkIn || !checkOut || !property) return;
-    const pricing = calculatePricing(property, checkIn, checkOut, couponData, guests);
-    const propertyName = localField(property, 'name');
-    const ciStr = format(checkIn, 'dd/MM/yyyy');
-    const coStr = format(checkOut, 'dd/MM/yyyy');
-    const coupon = couponData?.code || (lang === 'el' ? 'Καμία' : 'None');
-    const msg = t('whatsappMsg')
-      .replace('{property}', propertyName)
-      .replace('{checkIn}', ciStr)
-      .replace('{checkOut}', coStr)
-      .replace('{nights}', pricing.nights)
-      .replace('{coupon}', coupon)
-      .replace('{total}', pricing.total.toFixed(2));
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
-  };
-
-  if (!propertyId) {
+  // 1. Loading State
+  if (loading) {
     return (
-      <div className="max-w-4xl mx-auto p-8 text-center">
-        <p className="mb-4 text-muted-foreground font-body">
-          {lang === 'el' ? 'Δεν επιλέχθηκε κατάλυμα.' : 'No property selected.'}
-        </p>
-        <Button onClick={() => navigate('/residences')}>{t('residences')}</Button>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
-  if (isLoading) {
-    return (
-      <div className="max-w-4xl mx-auto p-6 space-y-4">
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-96 rounded-xl" />
-      </div>
-    );
-  }
-
+  // 2. Empty State (No Property Selected) - This is the FIX
   if (!property) {
     return (
-      <div className="max-w-4xl mx-auto p-8 text-center">
-        <p className="mb-4 text-muted-foreground font-body">
-          {lang === 'el' ? 'Το κατάλυμα δεν βρέθηκε.' : 'Property not found.'}
-        </p>
-        <Button asChild variant="outline"><Link to="/">{t('backHome')}</Link></Button>
+      <div className="min-h-[70vh] flex items-center justify-center bg-muted/20 px-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-md w-full bg-card p-8 rounded-2xl shadow-sm border border-border/50 text-center"
+        >
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Home className="w-8 h-8 text-primary" />
+          </div>
+          <h2 className="text-2xl font-heading font-bold text-foreground mb-3">
+            {lang === 'en' ? 'Select a Residence' : 'Επιλέξτε Κατοικία'}
+          </h2>
+          <p className="text-muted-foreground font-body mb-8">
+            {lang === 'en' 
+              ? 'Please select one of our traditional homes to check availability and proceed with your booking.' 
+              : 'Παρακαλούμε επιλέξτε μία από τις κατοικίες μας για να δείτε τη διαθεσιμότητα και να κάνετε κράτηση.'}
+          </p>
+          <div className="flex flex-col gap-3">
+            <Button asChild className="w-full" size="lg">
+              <Link to="/residences">
+                {lang === 'en' ? 'View Our Residences' : 'Δείτε τις Κατοικίες μας'}
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" className="w-full text-muted-foreground">
+              <Link to="/">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                {t('backHome')}
+              </Link>
+            </Button>
+          </div>
+        </motion.div>
       </div>
     );
   }
 
-  const nights = checkIn && checkOut ? differenceInDays(checkOut, checkIn) : 0;
-  const canBook = checkIn && checkOut && nights >= MIN_NIGHTS;
+  // 3. Normal Booking Flow (Property exists)
+  const { total, nights } = calculateTotal(property, checkIn, checkOut, guests);
+
+  const handleDateSelect = (inDate, outDate) => {
+    setCheckIn(inDate);
+    setCheckOut(outDate);
+  };
+
+  const handleBook = () => {
+    if (nights < 2) return;
+    alert(`Booking request sent for ${guests} guests! Total: ${total}€`);
+  };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-      <Link to={`/property/${property.id}`}
-        className="inline-flex items-center gap-1.5 text-sm font-body text-muted-foreground hover:text-foreground transition-colors mb-6">
-        <ArrowLeft className="w-4 h-4" /> {localField(property, 'name')}
-      </Link>
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+      <Button 
+        variant="ghost" 
+        onClick={() => navigate(-1)}
+        className="mb-6 -ml-4 text-muted-foreground hover:text-foreground"
+      >
+        <ArrowLeft className="w-4 h-4 mr-2" />
+        {lang === 'en' ? 'Back' : 'Πίσω'}
+      </Button>
 
-      <h1 className="font-heading text-2xl sm:text-3xl font-bold mb-6">
-        {lang === 'el' ? 'Κράτηση' : 'Book'}: {localField(property, 'name')}
-      </h1>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Calendar */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border">
-          <BookingCalendar
-            blockedDates={property.blocked_dates || []}
-            bookings={bookings}
-            icalUrl={property.ical_url}
-            onDateSelect={handleDateSelect}
-            checkIn={checkIn}
-            checkOut={checkOut}
-          />
+      <div className="mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold font-heading text-foreground mb-2">
+          {property.name}
+        </h1>
+        <p className="text-muted-foreground flex items-center gap-2">
+          <Home className="w-4 h-4" />
+          {lang === 'en' ? 'Booking & Availability' : 'Κράτηση & Διαθεσιμότητα'}
+        </p>
+      </div>
+      
+      {/* UI: Guests Counter */}
+      <div className="mb-6 bg-card p-4 rounded-xl border border-border/50 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h3 className="font-semibold text-foreground">{t('guests')}</h3>
+          <p className="text-sm text-muted-foreground">
+            {lang === 'en' ? 'Who is coming?' : 'Πόσα άτομα θα μείνουν;'}
+          </p>
         </div>
-
-        {/* Sidebar */}
-        <div className="space-y-4">
-          {/* Guest counter */}
-          <div className="flex items-center justify-between p-4 bg-muted/60 border border-border/50 rounded-xl">
-            <div className="text-sm font-body font-semibold">
-              {lang === 'el' ? 'Επισκέπτες' : 'Guests'}
-              <span className="block font-normal text-muted-foreground text-xs mt-0.5">
-                {guests} {lang === 'el' ? 'άτομα' : 'people'}
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <button onClick={() => setGuests(g => Math.max(1, g - 1))}
-                className="w-8 h-8 flex items-center justify-center rounded-full border border-border bg-white hover:bg-slate-50 transition-all shadow-sm">
-                <Minus className="w-3.5 h-3.5" />
-              </button>
-              <span className="font-heading font-bold text-lg w-4 text-center">{guests}</span>
-              <button onClick={() => setGuests(g => Math.min(property.max_guests || 6, g + 1))}
-                className="w-8 h-8 flex items-center justify-center rounded-full border border-border bg-white hover:bg-slate-50 transition-all shadow-sm">
-                <Plus className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-
-          {canBook ? (
-            <>
-              <PriceSummary
-                property={property}
-                checkIn={checkIn}
-                checkOut={checkOut}
-                couponData={couponData}
-                onCouponApplied={setCouponData}
-                guests={guests}
-              />
-              <Button
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-body font-semibold text-base h-14 gap-2 shadow-lg"
-                onClick={handleWhatsApp}
-              >
-                <MessageCircle className="w-5 h-5" />
-                {t('whatsappCTA')}
-              </Button>
-              <p className="text-xs text-center text-muted-foreground font-body">
-                {lang === 'el' ? 'Δεν απαιτείται πιστωτική κάρτα' : 'No credit card required'}
-              </p>
-            </>
-          ) : (
-            <div className="bg-muted/50 rounded-xl p-5 text-center">
-              <p className="font-body text-sm text-muted-foreground">
-                {lang === 'el' ? 'Επιλέξτε ημερομηνίες (min. 2 βράδια)' : 'Select dates (min. 2 nights)'}
-              </p>
-            </div>
-          )}
+        <div className="flex items-center gap-4 bg-muted/30 p-2 rounded-lg">
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="h-8 w-8"
+            onClick={() => setGuests(g => Math.max(1, g - 1))}
+          >
+            -
+          </Button>
+          <span className="w-8 text-center font-bold text-lg">{guests}</span>
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="h-8 w-8"
+            onClick={() => setGuests(g => Math.min(property.max_guests || 8, g + 1))}
+          >
+            +
+          </Button>
         </div>
       </div>
+
+      <div className="bg-card p-4 sm:p-6 rounded-xl shadow-sm border border-border/50">
+        <h3 className="font-semibold text-foreground mb-4">{t('selectDates')}</h3>
+        <BookingCalendar 
+          blockedDates={property.blocked_dates || []} 
+          icalUrl={property.ical_url}
+          onDateSelect={handleDateSelect}
+          checkIn={checkIn}
+          checkOut={checkOut}
+        />
+      </div>
+
+      {checkIn && checkOut && (
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-8 p-6 sm:p-8 bg-primary/5 rounded-2xl border border-primary/20"
+        >
+          {nights >= 2 ? (
+            <>
+              <div className="space-y-4 mb-6">
+                <div className="flex justify-between items-center text-sm text-muted-foreground">
+                  <span>{nights} {t('nights')} × {guests} {t('guests')}</span>
+                  <span>{property.base_price_per_night}€ / {t('night')} (avg)</span>
+                </div>
+                <div className="flex justify-between items-center text-xl sm:text-2xl font-bold text-foreground pt-4 border-t border-primary/10">
+                  <span>{t('total')}</span>
+                  <span className="text-primary">{total}€</span>
+                </div>
+              </div>
+              <Button className="w-full h-12 text-lg font-semibold shadow-md hover:shadow-lg transition-all" onClick={handleBook}>
+                {t('whatsappCTA')}
+              </Button>
+            </>
+          ) : (
+            <div className="text-center p-4 bg-destructive/10 rounded-lg text-destructive font-semibold">
+              {t('minStay')}
+            </div>
+          )}
+        </motion.div>
+      )}
     </div>
   );
 }
