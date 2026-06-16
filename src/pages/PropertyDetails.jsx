@@ -1,11 +1,14 @@
+// Γραμμή 1-14: αντικατέστησε τα imports
 import React, { useState } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';   // ← πρόσθεσε useParams
 import BookingCalendar from '@/components/BookingCalendar';
-import PriceSummary, { calculatePricing } from '@/components/PriceSummary';
+import PriceSummary from '@/components/PriceSummary';
+import { calculatePricing } from '@/lib/pricing';      // ← από το νέο αρχείο
 import { Button } from '@/components/ui/button';
+// ... υπόλοιπα imports ίδια
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft, MapPin, Users, BedDouble, Bath, Wifi, Car, Wind, Utensils, Waves, TreePine, Check, Info, MessageCircle, Minus, Plus } from 'lucide-react';
@@ -19,9 +22,11 @@ const amenityIcons = {
   'Sea View': Waves, 'Garden': TreePine, 'Pool': Waves,
 };
 
+// Γραμμή 24: αντικατέστησε το window.location με useParams
 export default function PropertyDetails() {
   const { t, localField, lang } = useLanguage();
-  const propertyId = window.location.pathname.split('/').pop();
+  const { id: propertyId } = useParams();   // ← αντί για window.location.pathname.split('/').pop()
+  // ... υπόλοιπος κώδικας ίδιος
 
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
