@@ -18,25 +18,25 @@ export default function Home() {
     initialData: [],
   });
 
-  // Real Testimonials from Airbnb
+  // Authentic Airbnb Reviews from screenshots
   const testimonials = [
     {
-      name: "Refat",
+      name: "Ozgur",
       location: "Airbnb",
-      text_en: "It was a great stay at Iordanou Residences. The house was exactly as described, very clean and peaceful.",
-      text_el: "Ήταν μια υπέροχη διαμονή στα Iordanou Residences. Το σπίτι ήταν ακριβώς όπως περιγράφεται, πολύ καθαρό και ήσυχο."
+      text_en: "The location of the house is perfect, silent and peaceful environment with a nice sea view. You can ride to the center in five minutes. Hope to be there again in autumn.",
+      text_el: "Η τοποθεσία του σπιτιού είναι τέλεια, ήσυχο και γαλήνιο περιβάλλον με ωραία θέα στη θάλασσα. Μπορείτε να πάτε στο κέντρο σε πέντε λεπτά. Ελπίζουμε να ξαναέρθουμε το φθινόπωρο."
     },
     {
-      name: "Athanasia",
+      name: "Tansu",
       location: "Airbnb",
-      text_en: "The house is absolutely wonderful, traditional, very clean and comfortable. We felt like home.",
-      text_el: "Το σπίτι είναι απόλυτα υπέροχο, παραδοσιακό, πολύ καθαρό και άνετο. Νιώσαμε σαν στο σπίτι μας."
+      text_en: "The house is 10 minutes from the port of Lesvos. We couldn't ask for a better house in terms of layout and cleanliness.",
+      text_el: "Η τοποθεσία του είναι 10 λεπτά από το λιμάνι της Λέσβου, η διαρρύθμιση και η καθαριότητα του σπιτιού ήταν άψογες. Δεν θα μπορούσαμε να ζητήσουμε κάτι περισσότερο."
     },
     {
-      name: "George",
+      name: "Ufuk",
       location: "Airbnb",
-      text_en: "Great location, very peaceful, and the garden is amazing. Perfect for a relaxing vacation.",
-      text_el: "Εξαιρετική τοποθεσία, πολύ ήσυχα, και ο κήπος είναι καταπληκτικός. Τέλειο για χαλαρωτικές διακοπές."
+      text_en: "The three days we spent on the island and in Gavathas were one of the most beautiful and peaceful holiday experiences we have ever had.",
+      text_el: "Οι τρεις ημέρες που περάσαμε στο νησί και στον Γαβαθά ήταν μία από τις πιο όμορφες και ειρηνικές εμπειρίες διακοπών που είχαμε ποτέ."
     }
   ];
 
@@ -47,34 +47,24 @@ export default function Home() {
           <img 
             src="https://www.visitgreece.gr/images/1743x752/jpg/files/i_1162556431_lesvos_1743x752.jpg" 
             alt="Iordanou Residences Background" 
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover opacity-45"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-slate-950/50" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 relative z-10 w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-2xl"
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-2xl">
             <div className="flex items-center gap-2 mb-4">
               <MapPin className="w-4 h-4 text-sky-400" />
               <span className="text-sm font-body font-medium text-sky-300 tracking-wide">{t('lesvosGreece')}</span>
             </div>
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
-              {t('heroTitle')}
-            </h1>
-            <p className="font-body text-lg text-white/90 mb-8 max-w-lg leading-relaxed">
-              {t('heroSubtitle')}
-            </p>
+            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">{t('heroTitle')}</h1>
+            <p className="font-body text-lg text-white/90 mb-8 max-w-lg leading-relaxed">{t('heroSubtitle')}</p>
             <div className="flex flex-wrap gap-3">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-body font-semibold gap-2 text-base px-6" asChild>
-                <a href="#properties">
-                  {t('bookDirectly')}
-                  <ArrowRight className="w-4 h-4" />
-                </a>
+                <a href="#properties">{t('bookDirectly')}<ArrowRight className="w-4 h-4" /></a>
               </Button>
               <Button size="lg" variant="outline" className="font-body font-medium text-base px-6 border-white/30 text-white hover:bg-white/10 hover:text-white" asChild>
                 <Link to="/explore">{t('exploreLesvos')}</Link>
@@ -89,23 +79,15 @@ export default function Home() {
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">{t('ourResidences')}</h2>
           <p className="font-body text-muted-foreground max-w-md mx-auto">{t('tagline')}</p>
         </div>
-
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto justify-center">
             {[1, 2].map(i => (
-              <div key={i} className="space-y-4">
-                <Skeleton className="aspect-[4/3] rounded-xl" />
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
-                <Skeleton className="h-10 w-full rounded-lg" />
-              </div>
+              <div key={i} className="space-y-4"><Skeleton className="aspect-[4/3] rounded-xl" /><Skeleton className="h-6 w-3/4" /></div>
             ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto justify-center">
-            {properties.map((property, i) => (
-              <PropertyCard key={property.id} property={property} index={i} />
-            ))}
+            {properties.map((property, i) => <PropertyCard key={property.id} property={property} index={i} />)}
           </div>
         )}
       </section>
@@ -117,23 +99,11 @@ export default function Home() {
               {lang === 'en' ? 'What Our Guests Say' : 'Τι Λένε οι Επισκέπτες μας'}
             </h2>
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {testimonials.map((review, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-card border border-border/60 p-6 sm:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="flex gap-1 mb-4">
-                  {[1,2,3,4,5].map(star => <Star key={star} className="w-4 h-4 fill-primary text-primary" />)}
-                </div>
-                <p className="font-body text-foreground/80 leading-relaxed text-sm sm:text-base mb-6 italic">
-                  "{lang === 'en' ? review.text_en : review.text_el}"
-                </p>
+              <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="bg-card border border-border/60 p-6 sm:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex gap-1 mb-4">{[1,2,3,4,5].map(star => <Star key={star} className="w-4 h-4 fill-primary text-primary" />)}</div>
+                <p className="font-body text-foreground/80 leading-relaxed text-sm sm:text-base mb-6 italic">"{lang === 'en' ? review.text_en : review.text_el}"</p>
                 <div className="mt-auto border-t border-border/40 pt-4">
                   <p className="font-heading font-bold text-foreground text-sm">{review.name}</p>
                   <p className="font-body text-muted-foreground text-xs">{review.location}</p>
@@ -147,42 +117,18 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground text-center mb-12">{t('whyBook')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0 }}
-            className="text-center p-6 bg-card border border-border/40 rounded-2xl shadow-sm"
-          >
-            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <Shield className="w-7 h-7 text-primary" />
-            </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center p-6 bg-card border border-border/40 rounded-2xl shadow-sm">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-5"><Shield className="w-7 h-7 text-primary" /></div>
             <h3 className="font-heading text-lg font-semibold text-foreground mb-3">{t('reason1Title')}</h3>
             <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason1Desc')}</p>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-center p-6 bg-card border border-border/40 rounded-2xl shadow-sm"
-          >
-            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <CalendarCheck className="w-7 h-7 text-primary" />
-            </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-center p-6 bg-card border border-border/40 rounded-2xl shadow-sm">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-5"><CalendarCheck className="w-7 h-7 text-primary" /></div>
             <h3 className="font-heading text-lg font-semibold text-foreground mb-3">{t('reason2Title')}</h3>
             <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason2Desc')}</p>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-center p-6 bg-card border border-border/40 rounded-2xl shadow-sm"
-          >
-            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <Headphones className="w-7 h-7 text-primary" />
-            </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-center p-6 bg-card border border-border/40 rounded-2xl shadow-sm">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-5"><Headphones className="w-7 h-7 text-primary" /></div>
             <h3 className="font-heading text-lg font-semibold text-foreground mb-3">{t('reason3Title')}</h3>
             <p className="font-body text-sm text-muted-foreground leading-relaxed">{t('reason3Desc')}</p>
           </motion.div>
@@ -193,11 +139,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-background/10">
-              <img 
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcyYGjg8X8FBcAX12eUK7fxYEwzad7CW5og&s" 
-                alt="Our Family" 
-                className="w-full h-full object-cover"
-              />
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzcyYGjg8X8FBcAX12eUK7fxYEwzad7CW5og&s" alt="Our Family" loading="lazy" decoding="async" className="w-full h-full object-cover" />
             </div>
             <div className="space-y-6">
               <div className="flex items-center gap-2 text-primary text-xs font-body font-bold uppercase tracking-wider">
