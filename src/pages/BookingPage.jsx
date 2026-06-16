@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useLanguage } from '@/lib/LanguageContext';
 import { Button } from '@/components/ui/button';
 import BookingCalendar from '@/components/BookingCalendar';
-import { calculateTotal } from '@/lib/pricing';
+import { calculatePricing } from '@/lib/pricing';
 import { base44 } from '@/api/base44Client';
 import { Home, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -44,7 +44,7 @@ export default function BookingPage() {
     );
   }
 
-  // 2. Empty State (No Property Selected) - This is the FIX
+  // 2. Empty State (No Property Selected)
   if (!property) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center bg-muted/20 px-4">
@@ -83,7 +83,8 @@ export default function BookingPage() {
   }
 
   // 3. Normal Booking Flow (Property exists)
-  const { total, nights } = calculateTotal(property, checkIn, checkOut, guests);
+  // FIX: Άλλαξε σε calculatePricing και περάστηκε το null για το couponData
+  const { total, nights } = calculatePricing(property, checkIn, checkOut, null, guests);
 
   const handleDateSelect = (inDate, outDate) => {
     setCheckIn(inDate);
