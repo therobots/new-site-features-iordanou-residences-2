@@ -97,67 +97,54 @@ export default function BookingCalendar({ blockedDates = [], bookings = [], ical
   };
 
   const renderMonth = (monthDate) => {
-    const monthStart = startOfMonth(monthDate);
-    const monthEnd = endOfMonth(monthDate);
-    const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
-    const startDay = monthStart.getDay();
-    const dayNames = lang === 'el'
-      ? ['Κυ', 'Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα']
-      : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  const monthStart = startOfMonth(monthDate);
+  const monthEnd   = endOfMonth(monthDate);
+  const days       = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
-    return (
-      <div>
-        <h3 className="text-center font-heading font-semibold text-foreground mb-3 capitalize">
-          {format(monthDate, 'MMMM yyyy', { locale })}
-        </h3>
-        <div className="grid grid-cols-7 gap-0.5 mb-1">
-          {dayNames.map(d => (
-            <div key={d} className="text-center text-xs font-body font-medium text-muted-foreground py-1.5">{d}</div>
-          ))}
-        </div>
-        <div className="grid grid-cols-7 gap-0.5">
-          {Array(startDay).fill(null).map((_, i) => <div key={`empty-${i}`} />)}
-          {days.map(day => {
-            const blocked = isBlocked(day) || isPast(day);
-            const selected = isCheckIn(day) || isCheckOut(day);
-            const inRange = isInRange(day);
+  // Δευτέρα = πρώτη μέρα (EU standard)
+  const dayNames = lang === 'el'
+    ? ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ']
+    : ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
-            return (
-              <button
-                key={day.toISOString()}
-                onClick={() => handleDayClick(day)}
-                disabled={blocked}
-                className={`
-                  relative h-10 text-sm font-body rounded-md transition-all
-                  ${blocked ? 'text-muted-foreground/40 cursor-not-allowed line-through bg-muted/20' : 'cursor-pointer hover:bg-primary/10'}
-                  ${selected ? 'bg-primary text-primary-foreground font-semibold shadow-sm' : ''}
-                  ${inRange ? 'bg-primary/15 text-primary' : ''}
-                  ${!blocked && !selected && !inRange ? 'text-foreground' : ''}
-                `}
-              >
-                {format(day, 'd')}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
+  // getDay() επιστρέφει 0=Κυρ, 1=Δευ ... 6=Σαβ
+  // Μετατροπή σε Mon-start offset: (getDay() + 6) % 7
+  const startOffset = (monthStart.getDay() + 6) % 7;
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <Button variant="ghost" size="icon" onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
-          <ChevronLeft className="w-4 h-4" />
-        </Button>
-        <Button variant="ghost" size="icon" onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
-          <ChevronRight className="w-4 h-4" />
-        </Button>
+      <h3 className="text-center font-heading font-semibold text-foreground mb-3 capitalize">
+        {format(monthDate, 'MMMM yyyy', { locale })}
+      </h3>
+      <div className="grid grid-cols-7 gap-0.5 mb-1">
+        {dayNames.map(d => (
+          <div key={d} className="text-center text-xs font-body font-medium text-muted-foreground py-1.5">{d}</div>
+        ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {renderMonth(currentMonth)}
-        {renderMonth(addMonths(currentMonth, 1))}
+      <div className="grid grid-cols-7 gap-0.5">
+        {Array(startOffset).fill(null).map((_, i) => <div key={`empty-${i}`} />)}
+        {days.map(day => {
+          const blocked  = isBlocked(day) || isPast(day);
+          const selected = isCheckIn(day) || isCheckOut(day);
+          const inRange  = isInRange(day);
+
+          return (
+            <button
+              key={day.toISOString()}
+              onClick={() => handleDayClick(day)}
+              disabled={blocked}
+              className={`
+                relative h-10 text-sm font-body rounded-md transition-all
+                ${blocked  ? 'text-muted-foreground/40 cursor-not-allowed line-through bg-muted/20' : 'cursor-pointer hover:bg-primary/10'}
+                ${selected ? 'bg-primary text-primary-foreground font-semibold shadow-sm' : ''}
+                ${inRange  ? 'bg-primary/15 text-primary' : ''}
+                ${!blocked && !selected && !inRange ? 'text-foreground' : ''}
+              `}
+            >
+              {format(day, 'd')}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
-}
+};
