@@ -8,10 +8,9 @@ import { el, enUS } from 'date-fns/locale';
 
 export default function BookingCalendar({ blockedDates = [], bookings = [], icalUrl, onDateSelect, checkIn, checkOut }) {
   const { lang } = useLanguage();
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
   const locale = lang === 'el' ? el : enUS;
 
-  // Auto-fetch Airbnb iCal data via CORS Proxy
   const { data: airbnbBlockedDates = [] } = useQuery({
     queryKey: ['ical', icalUrl],
     queryFn: async () => {
@@ -21,7 +20,6 @@ export default function BookingCalendar({ blockedDates = [], bookings = [], ical
         const res = await fetch(proxyUrl);
         const text = await res.text();
         const dates = new Set();
-        
         const events = text.split('BEGIN:VEVENT');
         for (let i = 1; i < events.length; i++) {
           const startMatch = events[i].match(/DTSTART(?:;.*?)?:([0-9]{8})/);
@@ -31,7 +29,6 @@ export default function BookingCalendar({ blockedDates = [], bookings = [], ical
             const endStr = endMatch[1];
             let current = new Date(startStr.substring(0,4), parseInt(startStr.substring(4,6))-1, startStr.substring(6,8));
             const endDate = new Date(endStr.substring(0,4), parseInt(endStr.substring(4,6))-1, endStr.substring(6,8));
-            
             while (current < endDate) {
               dates.add(format(current, 'yyyy-MM-dd'));
               current = addDays(current, 1);
@@ -40,12 +37,11 @@ export default function BookingCalendar({ blockedDates = [], bookings = [], ical
         }
         return Array.from(dates);
       } catch (err) {
-        console.error("Airbnb Sync Error:", err);
         return [];
       }
     },
     enabled: !!icalUrl,
-    staleTime: 1000 * 60 * 30, // 30 minutes cache
+    staleTime: 1000 * 60 * 30,
   });
 
   const blockedSet = useMemo(() => {
@@ -63,15 +59,11 @@ export default function BookingCalendar({ blockedDates = [], bookings = [], ical
   }, [blockedDates, airbnbBlockedDates, bookings]);
 
   const today = startOfDay(new Date());
-
   const isBlocked = (date) => blockedSet.has(format(date, 'yyyy-MM-dd'));
   const isPast = (date) => isBefore(date, today);
   const isCheckIn = (date) => checkIn && isSameDay(date, checkIn);
   const isCheckOut = (date) => checkOut && isSameDay(date, checkOut);
-  const isInRange = (date) => {
-    if (!checkIn || !checkOut) return false;
-    return isAfter(date, checkIn) && isBefore(date, checkOut);
-  };
+  const isInRange = (date) => checkIn && checkOut && isAfter(date, checkIn) && isBefore(date, checkOut);
 
   const handleDayClick = (date) => {
     if (isPast(date) || isBlocked(date)) return;
@@ -97,54 +89,52 @@ export default function BookingCalendar({ blockedDates = [], bookings = [], ical
   };
 
   const renderMonth = (monthDate) => {
-  const monthStart = startOfMonth(monthDate);
-  const monthEnd   = endOfMonth(monthDate);
-  const days       = eachDayOfInterval({ start: monthStart, end: monthEnd });
+    const monthStart = startOfMonth(monthDate);
+    const monthEnd = endOfMonth(monthDate);
+    const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
+    const dayNames = lang === 'el' ? ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ'] : ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+    const startOffset = (monthStart.getDay() + 6) % 7;
 
-  // Δευτέρα = πρώτη μέρα (EU standard)
-  const dayNames = lang === 'el'
-    ? ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ']
-    : ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-
-  // getDay() επιστρέφει 0=Κυρ, 1=Δευ ... 6=Σαβ
-  // Μετατροπή σε Mon-start offset: (getDay() + 6) % 7
-  const startOffset = (monthStart.getDay() + 6) % 7;
+    return (
+      <div className="flex-1">
+        <h3 className="text-center font-heading font-semibold text-foreground mb-3 capitalize">
+          {format(monthDate, 'MMMM yyyy', { locale })}
+        </h3>
+        <div className="grid grid-cols-7 gap-0.5 mb-1">
+          {dayNames.map(d => <div key={d} className="text-center text-xs font-body font-medium text-muted-foreground py-1.5">{d}</div>)}
+        </div>
+        <div className="grid grid-cols-7 gap-0.5">
+          {Array(startOffset).fill(null).map((_, i) => <div key={`empty-${i}`} />)}
+          {days.map(day => {
+            const blocked = isBlocked(day) || isPast(day);
+            const selected = isCheckIn(day) || isCheckOut(day);
+            const inRange = isInRange(day);
+            return (
+              <button
+                key={day.toISOString()}
+                onClick={() => handleDayClick(day)}
+                disabled={blocked}
+                className={`relative h-10 w-full flex items-center justify-center text-sm font-body rounded-md transition-all ${blocked ? 'text-muted-foreground/40 cursor-not-allowed line-through bg-muted/20' : 'cursor-pointer hover:bg-primary/10'} ${selected ? 'bg-primary text-primary-foreground font-semibold shadow-sm' : ''} ${inRange ? 'bg-primary/15 text-primary' : ''} ${!blocked && !selected && !inRange ? 'text-foreground' : ''}`}
+              >
+                {format(day, 'd')}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div>
-      <h3 className="text-center font-heading font-semibold text-foreground mb-3 capitalize">
-        {format(monthDate, 'MMMM yyyy', { locale })}
-      </h3>
-      <div className="grid grid-cols-7 gap-0.5 mb-1">
-        {dayNames.map(d => (
-          <div key={d} className="text-center text-xs font-body font-medium text-muted-foreground py-1.5">{d}</div>
-        ))}
+    <div className="w-full">
+      <div className="flex items-center justify-between mb-4">
+        <Button variant="outline" size="icon" onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}><ChevronLeft className="w-4 h-4" /></Button>
+        <Button variant="outline" size="icon" onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}><ChevronRight className="w-4 h-4" /></Button>
       </div>
-      <div className="grid grid-cols-7 gap-0.5">
-        {Array(startOffset).fill(null).map((_, i) => <div key={`empty-${i}`} />)}
-        {days.map(day => {
-          const blocked  = isBlocked(day) || isPast(day);
-          const selected = isCheckIn(day) || isCheckOut(day);
-          const inRange  = isInRange(day);
-
-          return (
-            <button
-              key={day.toISOString()}
-              onClick={() => handleDayClick(day)}
-              disabled={blocked}
-              className={`
-                relative h-10 text-sm font-body rounded-md transition-all
-                ${blocked  ? 'text-muted-foreground/40 cursor-not-allowed line-through bg-muted/20' : 'cursor-pointer hover:bg-primary/10'}
-                ${selected ? 'bg-primary text-primary-foreground font-semibold shadow-sm' : ''}
-                ${inRange  ? 'bg-primary/15 text-primary' : ''}
-                ${!blocked && !selected && !inRange ? 'text-foreground' : ''}
-              `}
-            >
-              {format(day, 'd')}
-            </button>
-          );
-        })}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {renderMonth(currentMonth)}
+        <div className="hidden md:block">{renderMonth(addMonths(currentMonth, 1))}</div>
       </div>
     </div>
   );
-};
+}
