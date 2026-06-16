@@ -29,6 +29,7 @@ const translations = {
     night: "night",
     subtotal: "Subtotal",
     weeklyDiscount: "Weekly stay discount (10%)",
+    weeklyDiscountNote: "10% weekly discount applied automatically",
     couponDiscount: "Coupon discount",
     total: "Total",
     applyCoupon: "Promo Code",
@@ -63,6 +64,33 @@ const translations = {
     noResults: "No entries found",
     ourProperties: "Our Residences",
     beaches: "Beaches",
+    coupons: "Coupons",
+    guideManager: "Guidebook",
+    mapManager: "Map Points",
+    createCoupon: "Create Coupon",
+    code: "Code",
+    discount: "Discount",
+    status: "Status",
+    uses: "Uses",
+    actions: "Actions",
+    active: "Active",
+    inactive: "Inactive",
+    revoke: "Revoke",
+    activate: "Activate",
+    save: "Save",
+    edit: "Edit",
+    category: "Category",
+    title: "Title",
+    addGuideEntry: "Add Guide Entry",
+    residence: "Residence",
+    landmark: "Landmark",
+    location: "Location",
+    latitude: "Latitude",
+    longitude: "Longitude",
+    image: "Image",
+    close: "Close",
+    addMapPoint: "Add Map Point",
+    viewAndBook: "View & Book"
   },
   el: {
     brand: "Iordanou Residences",
@@ -90,6 +118,7 @@ const translations = {
     night: "βράδυ",
     subtotal: "Μερικό σύνολο",
     weeklyDiscount: "Έκπτωση εβδομαδιαίας διαμονής (10%)",
+    weeklyDiscountNote: "10% έκπτωση για εβδομαδιαία διαμονή έχει εφαρμοστεί",
     couponDiscount: "Έκπτωση κουπονιού",
     total: "Σύνολο",
     applyCoupon: "Κωδικός Προσφοράς",
@@ -124,6 +153,33 @@ const translations = {
     noResults: "Δεν βρέθηκαν εγγραφές",
     ourProperties: "Τα Καταλύματά μας",
     beaches: "Παραλίες",
+    coupons: "Κουπόνια",
+    guideManager: "Οδηγός",
+    mapManager: "Σημεία Χάρτη",
+    createCoupon: "Νέο Κουπόνι",
+    code: "Κωδικός",
+    discount: "Έκπτωση",
+    status: "Κατάσταση",
+    uses: "Χρήσεις",
+    actions: "Ενέργειες",
+    active: "Ενεργό",
+    inactive: "Ανενεργό",
+    revoke: "Ανάκληση",
+    activate: "Ενεργοποίηση",
+    save: "Αποθήκευση",
+    edit: "Επεξεργασία",
+    category: "Κατηγορία",
+    title: "Τίτλος",
+    addGuideEntry: "Νέα Εγγραφή Οδηγού",
+    residence: "Κατοικία",
+    landmark: "Αξιοθέατο",
+    location: "Τοποθεσία",
+    latitude: "Γεωγραφικό Πλάτος",
+    longitude: "Γεωγραφικό Μήκος",
+    image: "Εικόνα",
+    close: "Κλείσιμο",
+    addMapPoint: "Νέο Σημείο Χάρτη",
+    viewAndBook: "Προβολή & Κράτηση"
   }
 };
 
@@ -136,6 +192,7 @@ export function LanguageProvider({ children }) {
   };
 
   const t = (key) => translations[lang]?.[key] || translations.en[key] || key;
+
   const localField = (obj, field) => {
     if (!obj) return '';
     return obj[`${field}_${lang}`] || obj[`${field}_en`] || '';
